@@ -4960,7 +4960,7 @@ MonoBehaviour:
   slideSpeed: 1
   wallJumpLerp: 5
   dashSpeed: 40
-  kaioatTime: 1
+  kaioatTime: 0.1
   kaioatTimeCounter: 0
   canMove: 1
   wallGrab: 0

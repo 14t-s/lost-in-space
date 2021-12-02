@@ -19,7 +19,7 @@ public class Movement : MonoBehaviour
     public float wallJumpLerp = 10;
     public float dashSpeed = 20;
 
-    public float kaioatTime = 0.1f;
+    public float kaioatTime = 1f;
     public float kaioatTimeCounter;
 
     [Space]
@@ -121,6 +121,10 @@ public class Movement : MonoBehaviour
         if (!coll.onWall || coll.onGround)
             wallSlide = false;
 
+        
+
+       
+
         if (Input.GetButtonDown("Jump"))
         {
             anim.SetTrigger("jump");
@@ -128,12 +132,12 @@ public class Movement : MonoBehaviour
             if (kaioatTimeCounter > 0f)
             {
                 Jump(Vector2.up, false);
-                kaioatTimeCounter = 0f;
             }
 
             if (coll.onWall && !coll.onGround)
                 WallJump();
         }
+        
 
         if (Input.GetButtonDown("Fire1") && !hasDashed)
         {
@@ -289,6 +293,8 @@ public class Movement : MonoBehaviour
         player.velocity += dir * jumpForce;
 
         particle.Play();
+
+        kaioatTimeCounter = 0f;
     }
 
     IEnumerator DisableMovement(float time)
