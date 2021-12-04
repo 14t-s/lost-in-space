@@ -44,6 +44,12 @@ public class Movement : MonoBehaviour
     public ParticleSystem wallJumpParticle;
     public ParticleSystem slideParticle;
 
+    // Raycasts for corner correction and ledge grabbing
+    private float topRaycastLength;
+    public Vector3 edgeRaycastOffset;
+    public Vector3 innerRaycastOffset;
+    private bool canCornerCorrect;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -124,7 +130,7 @@ public class Movement : MonoBehaviour
         
 
        
-
+        // Jumping logic
         if (Input.GetButtonDown("Jump"))
         {
             anim.SetTrigger("jump");
@@ -295,6 +301,12 @@ public class Movement : MonoBehaviour
         particle.Play();
 
         kaioatTimeCounter = 0f;
+    }
+
+    private void CornerCorrect(float yVelocity)
+    {
+        //RaycastHit2D hit = Physics2D.Raycast(transform.position - innerRaycastOffset + Vector3.up * topRaycastLength, Vector3.left, topRaycastLength, groundTouch)
+        return;
     }
 
     IEnumerator DisableMovement(float time)
