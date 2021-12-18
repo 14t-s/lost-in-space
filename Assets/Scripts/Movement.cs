@@ -50,6 +50,8 @@ public class Movement : MonoBehaviour
     public Vector3 innerRaycastOffset;
     private bool canCornerCorrect;
 
+    public Vector2 checkLedgeOffset, drawLineRight, drawLineLeft;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -61,6 +63,13 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Raycast test
+        RaycastHit2D canClimbRight = Physics2D.Raycast((Vector2)transform.position + checkLedgeOffset, Vector2.right);
+        RaycastHit2D canClimbLeft = Physics2D.Raycast((Vector2)transform.position + checkLedgeOffset, Vector2.left);
+
+        Debug.DrawRay((Vector2)transform.position + checkLedgeOffset, Vector2.right*2, Color.red);
+        Debug.DrawRay((Vector2)transform.position + checkLedgeOffset, Vector2.left*2, Color.red);
+
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
         float xRaw = Input.GetAxisRaw("Horizontal");
@@ -76,6 +85,17 @@ public class Movement : MonoBehaviour
                 anim.Flip(side * -1);
             wallGrab = true;
             wallSlide = false;
+        }
+
+        // Check if player has reached the ledge of a wall
+        if (coll.reachLedge)
+        {
+            if (yRaw > 0)
+            {
+                canMove = false;
+            }
+            else
+                canMove = true;
         }
 
         if (Input.GetButtonUp("Fire3") || !coll.onWall || !canMove)

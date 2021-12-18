@@ -4972,6 +4972,8 @@ MonoBehaviour:
   jumpParticle: {fileID: 708599380}
   wallJumpParticle: {fileID: 423702326}
   slideParticle: {fileID: 740709920}
+  edgeRaycastOffset: {x: 0, y: 0, z: 0}
+  innerRaycastOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &213030898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5010,6 +5012,9 @@ MonoBehaviour:
   bottomOffset: {x: -0.25, y: -0.79}
   rightOffset: {x: 0.5, y: -0.33}
   leftOffset: {x: -0.5, y: -0.33}
+  checkLedgeOffset: {x: 0, y: 0}
+  drawLineRight: {x: 0.5, y: 0}
+  drawLineLeft: {x: -0.5, y: 0}
 --- !u!61 &213030900
 BoxCollider2D:
   m_ObjectHideFlags: 0

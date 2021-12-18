@@ -16,12 +16,15 @@ public class Collision : MonoBehaviour
     public bool onLeftWall;
     public int wallSide;
 
+    public bool reachLedge;
+
     [Space]
 
     [Header("Collision")]
 
     public float collisionRadius = 0.25f;
     public Vector2 bottomOffset, rightOffset, leftOffset;
+    public Vector2 checkLedgeOffset, drawLineRight, drawLineLeft;
     private Color debugCollisionColor = Color.red;
 
     // Start is called before the first frame update
@@ -41,6 +44,14 @@ public class Collision : MonoBehaviour
         onLeftWall = Physics2D.OverlapCircle((Vector2)transform.position + leftOffset, collisionRadius, groundLayer);
 
         wallSide = onRightWall ? -1 : 1;
+
+        RaycastHit2D canClimbRight = Physics2D.Raycast((Vector2)transform.position + checkLedgeOffset, Vector2.right);
+        RaycastHit2D canClimbLeft = Physics2D.Raycast((Vector2)transform.position + checkLedgeOffset, Vector2.left);
+
+        Debug.DrawRay((Vector2)transform.position + checkLedgeOffset, Vector2.right, Color.red);
+        Debug.DrawRay((Vector2)transform.position + checkLedgeOffset, Vector2.left, Color.red);
+
+        reachLedge = (canClimbRight == false && onRightWall) || (canClimbLeft == false && onLeftWall);
     }
 
     void OnDrawGizmos()
@@ -53,5 +64,8 @@ public class Collision : MonoBehaviour
         Gizmos.DrawWireSphere((Vector2)transform.position + bottomOffset + new Vector2(0.5f, 0f), collisionRadius);
         Gizmos.DrawWireSphere((Vector2)transform.position + rightOffset, collisionRadius);
         Gizmos.DrawWireSphere((Vector2)transform.position + leftOffset, collisionRadius);
+
+       // Gizmos.DrawLine((Vector2)transform.position + checkLedgeOffset, (Vector2)transform.position + checkLedgeOffset + drawLineLeft);
+      //  Gizmos.DrawLine((Vector2)transform.position + checkLedgeOffset, (Vector2)transform.position + checkLedgeOffset + drawLineRight);
     }
 }
