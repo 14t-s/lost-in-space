@@ -16,7 +16,7 @@ public class Collision : MonoBehaviour
     public bool onLeftWall;
     public int wallSide;
 
-    public bool reachLedge;
+    
 
     [Space]
 
@@ -24,8 +24,13 @@ public class Collision : MonoBehaviour
 
     public float collisionRadius = 0.25f;
     public Vector2 bottomOffset, rightOffset, leftOffset;
+
+    // ledge stuff
     public Vector2 checkLedgeOffset, drawLineRight, drawLineLeft;
     private Color debugCollisionColor = Color.red;
+    public bool onRightLedge, onLeftLedge;
+    public bool reachLedge, reachLedgeRight, reachLedgeLeft;
+    public GameObject ledgeCheckerObject;
 
     // Start is called before the first frame update
     void Start()
@@ -45,11 +50,16 @@ public class Collision : MonoBehaviour
 
         wallSide = onRightWall ? -1 : 1;
 
-        RaycastHit2D canClimbRight = Physics2D.Raycast((Vector2)transform.position + checkLedgeOffset, Vector2.right);
-        RaycastHit2D canClimbLeft = Physics2D.Raycast((Vector2)transform.position + checkLedgeOffset, Vector2.left);
+        
+        // Ledge checker
+        RaycastHit2D canClimbRight = Physics2D.Raycast(ledgeCheckerObject.transform.position, Vector2.right, 2f);
+        RaycastHit2D canClimbLeft = Physics2D.Raycast(ledgeCheckerObject.transform.position, Vector2.left, 2f);
 
-        Debug.DrawRay((Vector2)transform.position + checkLedgeOffset, Vector2.right, Color.red);
-        Debug.DrawRay((Vector2)transform.position + checkLedgeOffset, Vector2.left, Color.red);
+        Debug.DrawRay(ledgeCheckerObject.transform.position, Vector2.right, Color.red);
+        Debug.DrawRay(ledgeCheckerObject.transform.position, Vector2.left, Color.red);
+
+        reachLedgeRight = (canClimbRight == false && onRightWall);
+        reachLedgeLeft = (canClimbLeft == false && onLeftWall);
 
         reachLedge = (canClimbRight == false && onRightWall) || (canClimbLeft == false && onLeftWall);
     }

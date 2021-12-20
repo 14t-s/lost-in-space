@@ -4939,6 +4939,7 @@ Transform:
   - {fileID: 786101205}
   - {fileID: 708599378}
   - {fileID: 1297381497}
+  - {fileID: 769676809}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4974,6 +4975,9 @@ MonoBehaviour:
   slideParticle: {fileID: 740709920}
   edgeRaycastOffset: {x: 0, y: 0, z: 0}
   innerRaycastOffset: {x: 0, y: 0, z: 0}
+  checkLedgeOffset: {x: 0, y: 0}
+  drawLineRight: {x: 0, y: 0}
+  drawLineLeft: {x: 0, y: 0}
 --- !u!114 &213030898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5015,6 +5019,11 @@ MonoBehaviour:
   checkLedgeOffset: {x: 0, y: 0}
   drawLineRight: {x: 0.5, y: 0}
   drawLineLeft: {x: -0.5, y: 0}
+  onRightLedge: 0
+  onLeftLedge: 0
+  reachLedgeRight: 0
+  reachLedgeLeft: 0
+  ledgeCheckerObject: {fileID: 769676808}
 --- !u!61 &213030900
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -15141,7 +15150,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -24780,6 +24788,36 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!1 &769676808
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 769676809}
+  m_Layer: 0
+  m_Name: LedgeCheckerObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &769676809
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 769676808}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.252, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 213030896}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &786101202
 GameObject:
   m_ObjectHideFlags: 0

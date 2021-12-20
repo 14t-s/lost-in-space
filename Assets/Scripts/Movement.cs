@@ -50,7 +50,11 @@ public class Movement : MonoBehaviour
     public Vector3 innerRaycastOffset;
     private bool canCornerCorrect;
 
-    public Vector2 checkLedgeOffset, drawLineRight, drawLineLeft;
+    // Ledge checker
+    //public Vector2 checkLedgeOffset, drawLineRight, drawLineLeft;
+    //public GameObject ledgeCheckerObject;
+    
+
 
     // Start is called before the first frame update
     void Start()
@@ -64,11 +68,11 @@ public class Movement : MonoBehaviour
     void Update()
     {
         // Raycast test
-        RaycastHit2D canClimbRight = Physics2D.Raycast((Vector2)transform.position + checkLedgeOffset, Vector2.right);
-        RaycastHit2D canClimbLeft = Physics2D.Raycast((Vector2)transform.position + checkLedgeOffset, Vector2.left);
+      //  RaycastHit2D canClimbRight = Physics2D.Raycast(ledgeCheckerObject.transform.position, Vector2.right);
+      //  RaycastHit2D canClimbLeft = Physics2D.Raycast(ledgeCheckerObject.transform.position, Vector2.left);
 
-        Debug.DrawRay((Vector2)transform.position + checkLedgeOffset, Vector2.right*2, Color.red);
-        Debug.DrawRay((Vector2)transform.position + checkLedgeOffset, Vector2.left*2, Color.red);
+      //  Debug.DrawRay(ledgeCheckerObject.transform.position, Vector2.right, Color.red);
+      //  Debug.DrawRay(ledgeCheckerObject.transform.position, Vector2.left, Color.red);
 
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
@@ -79,6 +83,7 @@ public class Movement : MonoBehaviour
         Walk(dir);
         anim.SetHorizontalMovement(x, y, player.velocity.y);
 
+        //  Wall grab code
         if (coll.onWall && Input.GetButton("Fire3") && canMove)
         {
             if (side != coll.wallSide)
@@ -88,15 +93,16 @@ public class Movement : MonoBehaviour
         }
 
         // Check if player has reached the ledge of a wall
-        if (coll.reachLedge)
+        
+        if (coll.reachLedgeLeft)
         {
-            if (yRaw > 0)
-            {
-                canMove = false;
-            }
-            else
-                canMove = true;
+            Debug.Log("TOP OF LEDGE L");
         }
+        if (coll.reachLedgeRight)
+        {
+            Debug.Log("TOP OF LEDGE R");
+        }
+
 
         if (Input.GetButtonUp("Fire3") || !coll.onWall || !canMove)
         {
@@ -126,7 +132,14 @@ public class Movement : MonoBehaviour
             if (x > .2f || x < -.2f)
                 player.velocity = new Vector2(player.velocity.x, 0);
 
-            float speedModifier = y > 0 ? .5f : 1;
+            float speedModifier;
+            if (coll.reachLedgeLeft == true || coll.reachLedgeRight == true)
+            {
+                speedModifier = y > 0 ? 0f : 1;
+            }
+            else
+                speedModifier = y > 0 ? .5f : 1;
+            
 
             player.velocity = new Vector2(player.velocity.x, y * (speed * speedModifier));
         }
