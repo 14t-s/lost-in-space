@@ -74,6 +74,14 @@ public class Movement : MonoBehaviour
       //  Debug.DrawRay(ledgeCheckerObject.transform.position, Vector2.right, Color.red);
       //  Debug.DrawRay(ledgeCheckerObject.transform.position, Vector2.left, Color.red);
 
+        // keys:
+        // arrow keys - movement
+        // z - jump
+        // shift - wall grab
+        // x - melee / s - ranged attckes
+        // c - special/dash
+        // d - ability
+
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
         float xRaw = Input.GetAxisRaw("Horizontal");
@@ -84,7 +92,7 @@ public class Movement : MonoBehaviour
         anim.SetHorizontalMovement(x, y, player.velocity.y);
 
         //  Wall grab code
-        if (coll.onWall && Input.GetButton("Fire3") && canMove)
+        if (coll.onWall && Input.GetKey(KeyCode.LeftShift) && canMove) // [kcc] also instead of putting keycodes here just make vars at top of script
         {
             if (side != coll.wallSide)
                 anim.Flip(side * -1);
@@ -92,7 +100,7 @@ public class Movement : MonoBehaviour
             wallSlide = false;
         }
 
-        // Check if player has reached the ledge of a wall
+        // Log if player has reached the ledge of a wall
         
         if (coll.reachLedgeLeft)
         {
@@ -104,7 +112,7 @@ public class Movement : MonoBehaviour
         }
 
 
-        if (Input.GetButtonUp("Fire3") || !coll.onWall || !canMove)
+        if (Input.GetKeyUp(KeyCode.LeftShift) || !coll.onWall || !canMove)
         {
             wallGrab = false;
             wallSlide = false;
@@ -148,7 +156,7 @@ public class Movement : MonoBehaviour
             player.gravityScale = 3;
         }
 
-        if (coll.onWall && !coll.onGround && Input.GetButtonUp("Fire3"))
+        if (coll.onWall && !coll.onGround && Input.GetKeyUp(KeyCode.LeftShift)) // [kcc]
         {
             if (x != 0 && !wallGrab)
             {
@@ -164,7 +172,7 @@ public class Movement : MonoBehaviour
 
        
         // Jumping logic
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetKeyDown(KeyCode.Z)) // [kcc]
         {
             anim.SetTrigger("jump");
 
@@ -178,7 +186,7 @@ public class Movement : MonoBehaviour
         }
         
 
-        if (Input.GetButtonDown("Fire1") && !hasDashed)
+        if (Input.GetKeyDown(KeyCode.C) && !hasDashed) // [kcc]
         {
             if (xRaw != 0 || yRaw != 0)
                 Dash(xRaw, yRaw);
