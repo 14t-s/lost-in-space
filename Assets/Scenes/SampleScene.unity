@@ -5012,8 +5012,8 @@ MonoBehaviour:
   collisionRadius: 0.1
   bottomOffset1: {x: -0.3, y: -0.8}
   bottomOffset2: {x: 0.3, y: -0.8}
-  rightOffset: {x: 0.44, y: -0.33}
-  leftOffset: {x: -0.44, y: -0.33}
+  rightOffset: {x: 0.35, y: -0.33}
+  leftOffset: {x: -0.35, y: -0.33}
   reachLedge: 0
   ledgeCheckerObject: {fileID: 769676808}
 --- !u!61 &213030900
