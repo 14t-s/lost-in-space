@@ -27,9 +27,11 @@ public class Collision : MonoBehaviour
 
     // ledge stuff
     private Color debugCollisionColor = Color.red;
-
     public bool reachLedge;
     public GameObject ledgeCheckerObject;
+
+    // head bumper correction 
+    public Vector2 bumpOuterOffset, bumpInnerOffset;
 
     // Start is called before the first frame update
     void Start()
@@ -51,13 +53,24 @@ public class Collision : MonoBehaviour
 
         
         // Ledge checker
-        RaycastHit2D canClimbRight = Physics2D.Raycast(ledgeCheckerObject.transform.position, Vector2.right, 2f);
-        RaycastHit2D canClimbLeft = Physics2D.Raycast(ledgeCheckerObject.transform.position, Vector2.left, 2f);
+        RaycastHit2D canClimbRight = Physics2D.Raycast(ledgeCheckerObject.transform.position, Vector2.right, 1f);
+        RaycastHit2D canClimbLeft = Physics2D.Raycast(ledgeCheckerObject.transform.position, Vector2.left, 1f);
 
-        Debug.DrawRay(ledgeCheckerObject.transform.position, Vector2.right, Color.red);
-        Debug.DrawRay(ledgeCheckerObject.transform.position, Vector2.left, Color.red);
-
+        Debug.DrawRay(ledgeCheckerObject.transform.position, Vector2.right*1f, Color.red);
+        Debug.DrawRay(ledgeCheckerObject.transform.position, Vector2.left*1f, Color.red);
         reachLedge = (canClimbRight == false && onRightWall) || (canClimbLeft == false && onLeftWall);
+
+        // Head bump corrector
+        RaycastHit2D headBumperOuterRight = Physics2D.Raycast((Vector2)transform.position + bumpOuterOffset, Vector2.up, 0.2f);
+        RaycastHit2D headBumperOuterLeft = Physics2D.Raycast((Vector2)transform.position - bumpOuterOffset, Vector2.up, 0.2f);
+
+        RaycastHit2D headBumperMaxCorrectionRight = Physics2D.Raycast((Vector2)transform.position + bumpInnerOffset, Vector2.up, 0.2f);
+        RaycastHit2D headBumperMaxCorrectionLeft = Physics2D.Raycast((Vector2)transform.position - bumpInnerOffset, Vector2.up, 0.2f);
+
+        Debug.DrawRay((Vector2)transform.position + bumpOuterOffset, Vector2.up * 0.2f, Color.red);
+        Debug.DrawRay((Vector2)transform.position - bumpOuterOffset, Vector2.up * 0.2f, Color.red);
+        Debug.DrawRay((Vector2)transform.position + bumpInnerOffset, Vector2.up * 0.2f, Color.red);
+        Debug.DrawRay((Vector2)transform.position - bumpInnerOffset, Vector2.up * 0.2f, Color.red);
     }
 
     void OnDrawGizmos()

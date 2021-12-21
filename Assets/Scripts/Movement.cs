@@ -67,13 +67,6 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Raycast test
-      //  RaycastHit2D canClimbRight = Physics2D.Raycast(ledgeCheckerObject.transform.position, Vector2.right);
-      //  RaycastHit2D canClimbLeft = Physics2D.Raycast(ledgeCheckerObject.transform.position, Vector2.left);
-
-      //  Debug.DrawRay(ledgeCheckerObject.transform.position, Vector2.right, Color.red);
-      //  Debug.DrawRay(ledgeCheckerObject.transform.position, Vector2.left, Color.red);
-
         // keys:
         // arrow keys - movement
         // z - jump
