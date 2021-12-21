@@ -88,7 +88,10 @@ public class Movement : MonoBehaviour
         if (coll.onWall && Input.GetKey(KeyCode.LeftShift) && canMove) // [kcc] also instead of putting keycodes here just make vars at top of script
         {
             if (side != coll.wallSide)
-                anim.Flip(side * -1);
+            {
+                side = side * -1;
+                anim.Flip(side);
+            }
             wallGrab = true;
             wallSlide = false;
         }
@@ -170,7 +173,7 @@ public class Movement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.C) && !hasDashed) // [kcc]
         {
             if (xRaw != 0 || yRaw != 0)
-                Dash(xRaw, yRaw);
+                Dash(xRaw, yRaw, side);
         }
 
         if (coll.onGround && !groundTouch)
@@ -213,8 +216,9 @@ public class Movement : MonoBehaviour
         jumpParticle.Play();
     }
 
-    private void Dash(float x, float y)
+    private void Dash(float x, float y, float xdir)
     {
+        if (x == -xdir && wallGrab) return;
         Camera.main.transform.DOComplete();
         Camera.main.transform.DOShakePosition(.2f, .5f, 14, 90, false, true);
         FindObjectOfType<RippleEffect>().Emit(Camera.main.WorldToViewportPoint(transform.position));
