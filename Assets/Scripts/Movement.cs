@@ -100,18 +100,6 @@ public class Movement : MonoBehaviour
             wallSlide = false;
         }
 
-        // Log if player has reached the ledge of a wall
-        
-        if (coll.reachLedgeLeft)
-        {
-            Debug.Log("TOP OF LEDGE L");
-        }
-        if (coll.reachLedgeRight)
-        {
-            Debug.Log("TOP OF LEDGE R");
-        }
-
-
         if (Input.GetKeyUp(KeyCode.LeftShift) || !coll.onWall || !canMove)
         {
             wallGrab = false;
@@ -141,7 +129,7 @@ public class Movement : MonoBehaviour
                 player.velocity = new Vector2(player.velocity.x, 0);
 
             float speedModifier;
-            if (coll.reachLedgeLeft == true || coll.reachLedgeRight == true)
+            if (coll.reachLedge == true)
             {
                 speedModifier = y > 0 ? 0f : 1;
             }

@@ -23,13 +23,12 @@ public class Collision : MonoBehaviour
     [Header("Collision")]
 
     public float collisionRadius = 0.25f;
-    public Vector2 bottomOffset, rightOffset, leftOffset;
+    public Vector2 bottomOffset1, bottomOffset2, rightOffset, leftOffset;
 
     // ledge stuff
-    public Vector2 checkLedgeOffset, drawLineRight, drawLineLeft;
     private Color debugCollisionColor = Color.red;
-    public bool onRightLedge, onLeftLedge;
-    public bool reachLedge, reachLedgeRight, reachLedgeLeft;
+
+    public bool reachLedge;
     public GameObject ledgeCheckerObject;
 
     // Start is called before the first frame update
@@ -41,7 +40,7 @@ public class Collision : MonoBehaviour
     // Update is called once per frame
     void Update()
     {  
-        onGround = Physics2D.OverlapCircle((Vector2)transform.position + bottomOffset, collisionRadius, groundLayer) || Physics2D.OverlapCircle((Vector2)transform.position + bottomOffset + new Vector2(0.5f, 0f), collisionRadius, groundLayer);
+        onGround = Physics2D.OverlapCircle((Vector2)transform.position + bottomOffset1, collisionRadius, groundLayer) || Physics2D.OverlapCircle((Vector2)transform.position + bottomOffset1 + new Vector2(0.5f, 0f), collisionRadius, groundLayer);
         onWall = Physics2D.OverlapCircle((Vector2)transform.position + rightOffset, collisionRadius, groundLayer) 
             || Physics2D.OverlapCircle((Vector2)transform.position + leftOffset, collisionRadius, groundLayer);
 
@@ -58,9 +57,6 @@ public class Collision : MonoBehaviour
         Debug.DrawRay(ledgeCheckerObject.transform.position, Vector2.right, Color.red);
         Debug.DrawRay(ledgeCheckerObject.transform.position, Vector2.left, Color.red);
 
-        reachLedgeRight = (canClimbRight == false && onRightWall);
-        reachLedgeLeft = (canClimbLeft == false && onLeftWall);
-
         reachLedge = (canClimbRight == false && onRightWall) || (canClimbLeft == false && onLeftWall);
     }
 
@@ -68,14 +64,11 @@ public class Collision : MonoBehaviour
     {
         Gizmos.color = Color.red;
 
-        var positions = new Vector2[] { bottomOffset, rightOffset, leftOffset };
+        var positions = new Vector2[] { bottomOffset1, rightOffset, leftOffset };
 
-        Gizmos.DrawWireSphere((Vector2)transform.position  + bottomOffset, collisionRadius);
-        Gizmos.DrawWireSphere((Vector2)transform.position + bottomOffset + new Vector2(0.5f, 0f), collisionRadius);
+        Gizmos.DrawWireSphere((Vector2)transform.position  + bottomOffset1, collisionRadius);
+        Gizmos.DrawWireSphere((Vector2)transform.position + bottomOffset2, collisionRadius);
         Gizmos.DrawWireSphere((Vector2)transform.position + rightOffset, collisionRadius);
         Gizmos.DrawWireSphere((Vector2)transform.position + leftOffset, collisionRadius);
-
-       // Gizmos.DrawLine((Vector2)transform.position + checkLedgeOffset, (Vector2)transform.position + checkLedgeOffset + drawLineLeft);
-      //  Gizmos.DrawLine((Vector2)transform.position + checkLedgeOffset, (Vector2)transform.position + checkLedgeOffset + drawLineRight);
     }
 }

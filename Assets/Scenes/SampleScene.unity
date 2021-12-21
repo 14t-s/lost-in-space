@@ -4975,9 +4975,6 @@ MonoBehaviour:
   slideParticle: {fileID: 740709920}
   edgeRaycastOffset: {x: 0, y: 0, z: 0}
   innerRaycastOffset: {x: 0, y: 0, z: 0}
-  checkLedgeOffset: {x: 0, y: 0}
-  drawLineRight: {x: 0, y: 0}
-  drawLineLeft: {x: 0, y: 0}
 --- !u!114 &213030898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5013,16 +5010,11 @@ MonoBehaviour:
   onLeftWall: 0
   wallSide: 0
   collisionRadius: 0.1
-  bottomOffset: {x: -0.25, y: -0.79}
+  bottomOffset1: {x: -0.3, y: -0.8}
+  bottomOffset2: {x: 0.3, y: -0.8}
   rightOffset: {x: 0.5, y: -0.33}
   leftOffset: {x: -0.5, y: -0.33}
-  checkLedgeOffset: {x: 0, y: 0}
-  drawLineRight: {x: 0.5, y: 0}
-  drawLineLeft: {x: -0.5, y: 0}
-  onRightLedge: 0
-  onLeftLedge: 0
-  reachLedgeRight: 0
-  reachLedgeLeft: 0
+  reachLedge: 0
   ledgeCheckerObject: {fileID: 769676808}
 --- !u!61 &213030900
 BoxCollider2D:
