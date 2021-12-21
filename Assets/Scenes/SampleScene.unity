@@ -5016,6 +5016,8 @@ MonoBehaviour:
   leftOffset: {x: -0.35, y: -0.33}
   reachLedge: 0
   ledgeCheckerObject: {fileID: 769676808}
+  bumpOuterOffset: {x: 0.4, y: 0}
+  bumpInnerOffset: {x: 0.2, y: 0}
 --- !u!61 &213030900
 BoxCollider2D:
   m_ObjectHideFlags: 0
