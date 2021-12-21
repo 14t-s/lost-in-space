@@ -31,7 +31,9 @@ public class Collision : MonoBehaviour
     public GameObject ledgeCheckerObject;
 
     // head bumper correction 
-    public Vector2 bumpOuterOffset, bumpInnerOffset;
+    public Vector2 bumpOuterOffset, bumpInnerOffset, maxCorrectorOffset;
+    public bool canCornerCorrect;
+    public float cornerCorrectDistance;
 
     // Start is called before the first frame update
     void Start()
@@ -63,14 +65,29 @@ public class Collision : MonoBehaviour
         // Head bump corrector
         RaycastHit2D headBumperOuterRight = Physics2D.Raycast((Vector2)transform.position + bumpOuterOffset, Vector2.up, 0.2f);
         RaycastHit2D headBumperOuterLeft = Physics2D.Raycast((Vector2)transform.position - bumpOuterOffset, Vector2.up, 0.2f);
-
         RaycastHit2D headBumperMaxCorrectionRight = Physics2D.Raycast((Vector2)transform.position + bumpInnerOffset, Vector2.up, 0.2f);
         RaycastHit2D headBumperMaxCorrectionLeft = Physics2D.Raycast((Vector2)transform.position - bumpInnerOffset, Vector2.up, 0.2f);
 
-        Debug.DrawRay((Vector2)transform.position + bumpOuterOffset, Vector2.up * 0.2f, Color.red);
-        Debug.DrawRay((Vector2)transform.position - bumpOuterOffset, Vector2.up * 0.2f, Color.red);
-        Debug.DrawRay((Vector2)transform.position + bumpInnerOffset, Vector2.up * 0.2f, Color.red);
-        Debug.DrawRay((Vector2)transform.position - bumpInnerOffset, Vector2.up * 0.2f, Color.red);
+        RaycastHit2D headBumperMeasureRight = Physics2D.Raycast((Vector2)transform.position + maxCorrectorOffset, Vector2.right, 1f);
+        if (headBumperMeasureRight.collider != null)
+        {
+           // float newCornerCorrectDistance = Vector3.Distance(new Vector3(headBumperMeasureRight.x, transform.position.y, 0f) + Vector3.up * )
+        }
+
+        RaycastHit2D headBumperMeasureLeft = Physics2D.Raycast((Vector2)transform.position - maxCorrectorOffset, Vector2.left, 1f);
+
+
+
+
+        Debug.DrawRay((Vector2)transform.position + bumpOuterOffset, Vector2.up * 0.2f, Color.blue);
+        Debug.DrawRay((Vector2)transform.position - bumpOuterOffset, Vector2.up * 0.2f, Color.blue);
+        Debug.DrawRay((Vector2)transform.position + bumpInnerOffset, Vector2.up * 0.2f, Color.blue);
+        Debug.DrawRay((Vector2)transform.position - bumpInnerOffset, Vector2.up * 0.2f, Color.blue);
+        Debug.DrawRay((Vector2)transform.position + maxCorrectorOffset, Vector2.right*0.3f, Color.blue);
+        Debug.DrawRay((Vector2)transform.position - maxCorrectorOffset + new Vector2(0,0.4f), Vector2.left*0.3f, Color.blue);
+        canCornerCorrect = (headBumperOuterRight || headBumperOuterLeft) && (!headBumperMaxCorrectionRight && !headBumperMaxCorrectionLeft);
+        //cornerCorrectDistance = ();
+
     }
 
     void OnDrawGizmos()

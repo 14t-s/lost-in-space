@@ -5018,6 +5018,7 @@ MonoBehaviour:
   ledgeCheckerObject: {fileID: 769676808}
   bumpOuterOffset: {x: 0.4, y: 0}
   bumpInnerOffset: {x: 0.2, y: 0}
+  maxCorrectorOffset: {x: 0.2, y: 0.2}
 --- !u!61 &213030900
 BoxCollider2D:
   m_ObjectHideFlags: 0
