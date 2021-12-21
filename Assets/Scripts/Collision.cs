@@ -67,10 +67,10 @@ public class Collision : MonoBehaviour
         RaycastHit2D headBumperMaxCorrectionRight = Physics2D.Raycast((Vector2)transform.position + bumpInnerOffset, Vector2.up, 0.2f);
         RaycastHit2D headBumperMaxCorrectionLeft = Physics2D.Raycast((Vector2)transform.position - bumpInnerOffset, Vector2.up, 0.2f);
 
-        Debug.DrawRay((Vector2)transform.position + bumpOuterOffset, Vector2.up * 0.5f, Color.red);
-        Debug.DrawRay((Vector2)transform.position - bumpOuterOffset, Vector2.up * 0.5f, Color.red);
-        Debug.DrawRay((Vector2)transform.position + bumpInnerOffset, Vector2.up * 0.5f, Color.red);
-        Debug.DrawRay((Vector2)transform.position - bumpInnerOffset, Vector2.up * 0.5f, Color.red);
+        Debug.DrawRay((Vector2)transform.position + bumpOuterOffset, Vector2.up * 0.2f, Color.red);
+        Debug.DrawRay((Vector2)transform.position - bumpOuterOffset, Vector2.up * 0.2f, Color.red);
+        Debug.DrawRay((Vector2)transform.position + bumpInnerOffset, Vector2.up * 0.2f, Color.red);
+        Debug.DrawRay((Vector2)transform.position - bumpInnerOffset, Vector2.up * 0.2f, Color.red);
     }
 
     void OnDrawGizmos()
