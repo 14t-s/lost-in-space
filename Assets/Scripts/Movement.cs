@@ -18,6 +18,8 @@ public class Movement : MonoBehaviour
     public float slideSpeed = 5;
     public float wallJumpLerp = 10;
     public float dashSpeed = 20;
+    public float fallMultiplier = 2.5f;
+    public float lowJumpMultiplier = 2f;
 
     public float kaioatTime = 1f;
     public float kaioatTimeCounter;
@@ -33,6 +35,7 @@ public class Movement : MonoBehaviour
     [Space]
 
     private bool groundTouch;
+    private bool hasJumped;
     private bool hasDashed;
 
     public int side = 1;
@@ -84,6 +87,18 @@ public class Movement : MonoBehaviour
         Walk(dir);
         anim.SetHorizontalMovement(x, y, player.velocity.y);
 
+        if (!isDashing)
+        {
+            if (player.velocity.y < 0)
+            {
+                player.velocity += (fallMultiplier - 1) * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
+            }
+            else if (player.velocity.y > 0 && !Input.GetKey(KeyCode.Z))
+            {
+                player.velocity += (lowJumpMultiplier - 1) * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
+            }
+        }
+
         //  Wall grab code
         if (coll.onWall && Input.GetKey(KeyCode.LeftShift) && canMove) // [kcc] also instead of putting keycodes here just make vars at top of script
         {
@@ -114,7 +129,6 @@ public class Movement : MonoBehaviour
         if (coll.onGround && !isDashing)
         {
             wallJumped = false;
-            GetComponent<BetterJumping>().enabled = true;
         }
 
 
@@ -242,7 +256,6 @@ public class Movement : MonoBehaviour
 
         dashParticle.Play();
         player.gravityScale = 0;
-        GetComponent<BetterJumping>().enabled = false;
         wallJumped = true;
         isDashing = true;
 
@@ -250,7 +263,6 @@ public class Movement : MonoBehaviour
 
         dashParticle.Stop();
         player.gravityScale = 3;
-        GetComponent<BetterJumping>().enabled = true;
         wallJumped = false;
         isDashing = false;
     }

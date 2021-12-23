@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAttack : MonoBehaviour
+public class Player : MonoBehaviour
 {
+    public int hp = 100;
+    
     // Start is called before the first frame update
     void Start()
     {
