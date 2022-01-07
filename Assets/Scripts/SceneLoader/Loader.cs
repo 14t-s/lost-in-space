@@ -7,11 +7,12 @@ public static class Loader
 {
     public enum Scene
     {
-        TestScene1,
-
+        TestScene1, Menu
     }
     public static void Load(Scene scene)
     {
+        SceneManager.LoadScene(Scene.Menu.ToString());
+
         SceneManager.LoadScene(scene.ToString());
     }
 
