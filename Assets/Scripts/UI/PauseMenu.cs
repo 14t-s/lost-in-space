@@ -8,7 +8,7 @@ public class PauseMenu : MonoBehaviour
     public GameObject pauseMenu;
     public GameObject optionsMenu;
     public static bool isPaused;
-    public static bool isSettings;
+    public static bool isOptions;
 
     // Start is called before the first frame update
     void Start()
@@ -22,9 +22,9 @@ public class PauseMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isSettings)
+            if (isOptions)
             {
-                CloseSettings();
+                CloseOptions();
             }
             else if (isPaused)
             {
@@ -51,18 +51,20 @@ public class PauseMenu : MonoBehaviour
         isPaused = false;
     }
 
+    // Options menu
     public void OpenOptions()
     {
         optionsMenu.SetActive(true);
-        isSettings = true;
+        isOptions = true;
     }
 
-    public void CloseSettings()
+    public void CloseOptions()
     {
         optionsMenu.SetActive(false);
-        isSettings = false;
+        isOptions = false;
     }
 
+    // Quit to main menu
     public void QuitToMenu()
     {
         Time.timeScale = 1f;
