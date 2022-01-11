@@ -25,24 +25,93 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
-                },
-                {
-                    ""name"": ""New action1"",
-                    ""type"": ""Button"",
-                    ""id"": ""e2c85c29-d43c-41fc-827b-8539ee43db4a"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
+                {
+                    ""name"": ""Vertical"",
+                    ""id"": ""dfaf406d-df20-4887-9667-120f75536d97"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""f2a025b9-0ebb-4f5d-89b9-a48350692b40"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""8bef299f-8378-4b41-bc28-38b9e9c8f373"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Horizontal"",
+                    ""id"": ""79903fdf-b8f6-4f33-a449-a4e0ae860739"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""New action"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""5953fa5f-7a63-4f82-8f32-f1a25b83b8c1"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""db2bf5f8-3a43-4f29-977c-babfeb502bd1"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5a806220-28b7-4d42-afcf-01347cbf0304"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
                 {
                     ""name"": """",
                     ""id"": ""ced24532-3e29-4255-801f-f54f55327dd8"",
                     ""path"": ""<Keyboard>/z"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""New action"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -53,7 +122,7 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/x"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""New action"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -64,7 +133,7 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/c"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""New action"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -75,7 +144,7 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""New action"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -86,7 +155,7 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""New action"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -97,51 +166,7 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""1198dae5-d9b4-496d-bd31-a95b0cd24322"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c85cd3c5-aae6-4872-abf2-d94551d89b6d"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""ab2d5372-ca6d-4782-b3fd-c01780142e25"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c906500b-ded6-4d1f-b6b0-a1460d7cb5fe"",
-                    ""path"": ""<Keyboard>/rightArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""New action"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -152,41 +177,8 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/leftShift"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""New action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""85dafd41-f632-4087-b41d-64762ff3ec6a"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""8ee73e83-bf13-4b02-ba73-a0228c99e246"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""82c0dd71-9113-4cdc-9bac-8bdbb55afa44"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -210,7 +202,6 @@ public class @Controls : IInputActionCollection, IDisposable
         // New action map
         m_Newactionmap = asset.FindActionMap("New action map", throwIfNotFound: true);
         m_Newactionmap_Newaction = m_Newactionmap.FindAction("New action", throwIfNotFound: true);
-        m_Newactionmap_Newaction1 = m_Newactionmap.FindAction("New action1", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -261,13 +252,11 @@ public class @Controls : IInputActionCollection, IDisposable
     private readonly InputActionMap m_Newactionmap;
     private INewactionmapActions m_NewactionmapActionsCallbackInterface;
     private readonly InputAction m_Newactionmap_Newaction;
-    private readonly InputAction m_Newactionmap_Newaction1;
     public struct NewactionmapActions
     {
         private @Controls m_Wrapper;
         public NewactionmapActions(@Controls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Newaction => m_Wrapper.m_Newactionmap_Newaction;
-        public InputAction @Newaction1 => m_Wrapper.m_Newactionmap_Newaction1;
         public InputActionMap Get() { return m_Wrapper.m_Newactionmap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -280,9 +269,6 @@ public class @Controls : IInputActionCollection, IDisposable
                 @Newaction.started -= m_Wrapper.m_NewactionmapActionsCallbackInterface.OnNewaction;
                 @Newaction.performed -= m_Wrapper.m_NewactionmapActionsCallbackInterface.OnNewaction;
                 @Newaction.canceled -= m_Wrapper.m_NewactionmapActionsCallbackInterface.OnNewaction;
-                @Newaction1.started -= m_Wrapper.m_NewactionmapActionsCallbackInterface.OnNewaction1;
-                @Newaction1.performed -= m_Wrapper.m_NewactionmapActionsCallbackInterface.OnNewaction1;
-                @Newaction1.canceled -= m_Wrapper.m_NewactionmapActionsCallbackInterface.OnNewaction1;
             }
             m_Wrapper.m_NewactionmapActionsCallbackInterface = instance;
             if (instance != null)
@@ -290,9 +276,6 @@ public class @Controls : IInputActionCollection, IDisposable
                 @Newaction.started += instance.OnNewaction;
                 @Newaction.performed += instance.OnNewaction;
                 @Newaction.canceled += instance.OnNewaction;
-                @Newaction1.started += instance.OnNewaction1;
-                @Newaction1.performed += instance.OnNewaction1;
-                @Newaction1.canceled += instance.OnNewaction1;
             }
         }
     }
@@ -309,6 +292,5 @@ public class @Controls : IInputActionCollection, IDisposable
     public interface INewactionmapActions
     {
         void OnNewaction(InputAction.CallbackContext context);
-        void OnNewaction1(InputAction.CallbackContext context);
     }
 }
