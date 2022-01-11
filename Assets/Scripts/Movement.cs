@@ -88,16 +88,10 @@ public class Movement : MonoBehaviour
         Walk(dir);
         anim.SetHorizontalMovement(x, y, player.velocity.y);
 
-        //  Wall grab code
+        //  Wall grab 
         if (coll.onWall && Input.GetKey(KeyCode.LeftShift) && canMove) // [kcc] also instead of putting keycodes here just make vars at top of script
         {
-            if (side != coll.wallSide)
-            {
-                side *= -1;
-                anim.Flip(side);
-            }
-            wallGrab = true;
-            wallSlide = false;
+            GrabWall();
         }
 
         if (Input.GetKeyUp(KeyCode.LeftShift) || !coll.onWall || !canMove)
@@ -106,6 +100,7 @@ public class Movement : MonoBehaviour
             wallSlide = false;
         }
 
+        // Resets coyote time or counts down the grace period
         if (coll.onGround == true)
         {
             kaioatTimeCounter = kaioatTime;
@@ -115,6 +110,7 @@ public class Movement : MonoBehaviour
             kaioatTimeCounter -= Time.deltaTime;
         }
 
+        // Resets better jumping?
         if (coll.onGround && !isDashing)
         {
             wallJumped = false;
@@ -130,9 +126,7 @@ public class Movement : MonoBehaviour
 
             float speedModifier;
             if (coll.reachLedge == true)
-            {
                 speedModifier = y > 0 ? 0f : 1;
-            }
             else
                 speedModifier = y > 0 ? .5f : 1;
             
@@ -208,6 +202,18 @@ public class Movement : MonoBehaviour
         }
 
 
+    }
+
+    // Handles the wall grabbing 
+    public void GrabWall()
+    {
+        if (side != coll.wallSide)
+        {
+            side *= -1;
+            anim.Flip(side);
+        }
+        wallGrab = true;
+        wallSlide = false;
     }
 
     void GroundTouch()

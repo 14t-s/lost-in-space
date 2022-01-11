@@ -18,7 +18,8 @@ public class BetterJumping : MonoBehaviour
         if(rb.velocity.y < 0)
         {
             rb.velocity += (fallMultiplier - 1) * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
-        }else if(rb.velocity.y > 0 && !Input.GetKey(KeyCode.Z))
+        }
+        else if (rb.velocity.y > 0 && !Input.GetKey(KeyCode.Z))
         {
             rb.velocity += (lowJumpMultiplier - 1) * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
         }
