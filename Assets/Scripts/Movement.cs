@@ -149,9 +149,6 @@ public class Movement : MonoBehaviour
 
         if (!coll.onWall || coll.onGround)
             wallSlide = false;
-
-        
-
        
         // Jumping logic
         if (Input.GetKeyDown(KeyCode.Z)) // [kcc]
@@ -202,6 +199,19 @@ public class Movement : MonoBehaviour
         }
 
 
+    }
+
+    public void HandleJump()
+    {
+        anim.SetTrigger("jump");
+
+            if (kaioatTimeCounter > 0f)
+            {
+                Jump(Vector2.up, false);
+            }
+
+            if (coll.onWall && !coll.onGround)
+                WallJump();
     }
 
     // Handles the wall grabbing 
