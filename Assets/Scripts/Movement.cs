@@ -50,11 +50,10 @@ public class Movement : MonoBehaviour
     public Vector3 innerRaycastOffset;
     private bool canCornerCorrect;
 
-    // Ledge checker
-    //public Vector2 checkLedgeOffset, drawLineRight, drawLineLeft;
-    //public GameObject ledgeCheckerObject;
-    
-
+    void Awake()
+    {
+        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -62,6 +61,11 @@ public class Movement : MonoBehaviour
         coll = GetComponent<Collision>();
         player = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<AnimationScript>();
+    }
+
+    private void OnDestroy()
+    {
+        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
     }
 
     // Update is called once per frame
@@ -366,5 +370,11 @@ public class Movement : MonoBehaviour
     {
         int particleSide = coll.onRightWall ? 1 : -1;
         return particleSide;
+    }
+
+    // Enable player only if GameState is in Gameplay
+    private void OnGameStateChanged(GameState newGameState)
+    {
+        enabled = newGameState == GameState.Gameplay;
     }
 }
