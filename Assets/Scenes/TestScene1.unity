@@ -2474,14 +2474,22 @@ MonoBehaviour:
     m_ActionName: Gameplay/New action[/Keyboard/space,/Keyboard/c,/Keyboard/a,/Keyboard/s,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 149ee351-3b6b-408d-afe6-a7ef954df4a0
-    m_ActionName: Gameplay/Movement[/Keyboard/leftArrow,/Keyboard/rightArrow,/Keyboard/downArrow,/Keyboard/upArrow]
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: 1486bb66-f8b3-4427-a138-193b125e9166
     m_ActionName: Gameplay/Jump[/Keyboard/z]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 213030897}
+        m_TargetAssemblyTypeName: Movement, Assembly-CSharp
+        m_MethodName: GrabWall
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: ff004438-1683-401d-b217-ac772ff06195
     m_ActionName: Gameplay/HoldWall[/Keyboard/leftShift]
   - m_PersistentCalls:
@@ -2500,6 +2508,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 34bc52ae-2f15-463e-84ed-e4ca4b8ccb2a
     m_ActionName: Paused/Down[/Keyboard/downArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4e41676e-2f9b-43c0-bd67-9f1690140c56
+    m_ActionName: Gameplay/Movement[/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay

@@ -14,17 +14,9 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Horizontal",
+                    "name": "Movement",
                     "type": "Button",
-                    "id": "149ee351-3b6b-408d-afe6-a7ef954df4a0",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
-                    "name": "Vertical",
-                    "type": "Button",
-                    "id": "7a5ab53e-71bd-43a5-bc49-7b0ce5134180",
+                    "id": "4e41676e-2f9b-43c0-bd67-9f1690140c56",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -49,14 +41,6 @@
                     "name": "Dash",
                     "type": "Button",
                     "id": "d42c04bc-d78d-4297-a690-de3f920acd8c",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
-                    "name": "Movement",
-                    "type": "Button",
-                    "id": "4e41676e-2f9b-43c0-bd67-9f1690140c56",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -119,39 +103,6 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "Horizontal",
-                    "id": "79903fdf-b8f6-4f33-a449-a4e0ae860739",
-                    "path": "1DAxis",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Horizontal",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "negative",
-                    "id": "5953fa5f-7a63-4f82-8f32-f1a25b83b8c1",
-                    "path": "<Keyboard>/leftArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Horizontal",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "db2bf5f8-3a43-4f29-977c-babfeb502bd1",
-                    "path": "<Keyboard>/rightArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Horizontal",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "",
                     "id": "ced24532-3e29-4255-801f-f54f55327dd8",
                     "path": "<Keyboard>/z",
@@ -183,39 +134,6 @@
                     "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "Vertical",
-                    "id": "dfaf406d-df20-4887-9667-120f75536d97",
-                    "path": "1DAxis",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Vertical",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "negative",
-                    "id": "f2a025b9-0ebb-4f5d-89b9-a48350692b40",
-                    "path": "<Keyboard>/downArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Vertical",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "8bef299f-8378-4b41-bc28-38b9e9c8f373",
-                    "path": "<Keyboard>/upArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Vertical",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 },
                 {
                     "name": "2D Vector",
