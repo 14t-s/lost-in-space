@@ -68,6 +68,8 @@ public class Movement : MonoBehaviour
         playerControlsAction = new Controls();
         playerControlsAction.Gameplay.Enable();
         playerControlsAction.Gameplay.Movement.performed += Movement_performed;
+        playerControlsAction.Gameplay.Jump.performed += HandleJump;
+        playerControlsAction.Gameplay.Dash.performed += HandleDash;
     }
 
     public void Movement_performed(InputAction.CallbackContext context)
@@ -122,6 +124,9 @@ public class Movement : MonoBehaviour
         float y = updatedInputVector.y;
         float xRaw = 0;
         float yRaw = 0;
+
+        //Debug.Log(playerControlsAction.Gameplay.HoldWall.ReadValue<float>());
+
 
         if (updatedInputVector.x > 0)
         {
@@ -262,7 +267,7 @@ public class Movement : MonoBehaviour
 
     }
 
-    public void HandleJump()
+    public void HandleJump(InputAction.CallbackContext context)
     {
         anim.SetTrigger("jump");
 
@@ -275,16 +280,30 @@ public class Movement : MonoBehaviour
             WallJump();
     }
 
+    public void HandleDash(InputAction.CallbackContext context)
+    {
+        // temp until stuff is moved
+        Vector2 updatedInputVector = playerControlsAction.Gameplay.Movement.ReadValue<Vector2>();
+        float xRaw = updatedInputVector.x;
+        float yRaw = updatedInputVector.y;
+
+        if (xRaw != 0 || yRaw != 0)
+            Dash(xRaw, yRaw, side);
+    }
+
     // Handles the wall grabbing 
     public void GrabWall()
     {
-        if (side != coll.wallSide)
+        if (coll.onWall && canMove)
         {
-            side *= -1;
-            anim.Flip(side);
+            if (side != coll.wallSide)
+            {
+                side *= -1;
+                anim.Flip(side);
+            }
+            wallGrab = true;
+            wallSlide = false;
         }
-        wallGrab = true;
-        wallSlide = false;
     }
 
     void GroundTouch()
