@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {
@@ -50,9 +51,46 @@ public class Movement : MonoBehaviour
     public Vector3 innerRaycastOffset;
     private bool canCornerCorrect;
 
+    private Controls playerControls;
+    private Controls playerControlsAction;
+
     void Awake()
     {
         GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
+        //playerControls = GetComponent<Controls>();
+
+        //Reference
+        /*
+        PlayerInputActions playerInputActions = new PlayerInputActions();
+        controls.Gameplay.Jump.performed += Jump;
+        */
+
+        playerControlsAction = new Controls();
+        playerControlsAction.Gameplay.Enable();
+        playerControlsAction.Gameplay.Movement.performed += Movement_performed;
+    }
+
+    public void Movement_performed(InputAction.CallbackContext context)
+    {
+        Vector2 inputVector = context.ReadValue<Vector2>();
+
+        float x = inputVector.x;
+        float y = inputVector.y;
+        Vector2 dir = new Vector2(x, y);
+
+        Walk(dir);
+        anim.SetHorizontalMovement(x, y, player.velocity.y);
+
+        //Archive
+        /*
+         float x = Input.GetAxis("Horizontal");
+        float y = Input.GetAxis("Vertical");
+        float xRaw = Input.GetAxisRaw("Horizontal");
+        float yRaw = Input.GetAxisRaw("Vertical");
+        Vector2 dir = new Vector2(x, y);
+
+        Walk(dir);
+        anim.SetHorizontalMovement(x, y, player.velocity.y);*/
     }
 
     // Start is called before the first frame update
@@ -79,22 +117,40 @@ public class Movement : MonoBehaviour
         // c - special/dash
         // d - ability
 
-        float x = Input.GetAxis("Horizontal");
-        float y = Input.GetAxis("Vertical");
-        float xRaw = Input.GetAxisRaw("Horizontal");
-        float yRaw = Input.GetAxisRaw("Vertical");
-        Vector2 dir = new Vector2(x, y);
+        Vector2 updatedInputVector = playerControlsAction.Gameplay.Movement.ReadValue<Vector2>();
+        float x = updatedInputVector.x;
+        float y = updatedInputVector.y;
+        float xRaw = 0;
+        float yRaw = 0;
 
-        Walk(dir);
-        anim.SetHorizontalMovement(x, y, player.velocity.y);
+        if (updatedInputVector.x > 0)
+        {
+            xRaw = 1;
+        }
+        else
+        {
+            xRaw = 0;
+        }
 
+        if (updatedInputVector.y > 0)
+        {
+            yRaw = 1;
+        }
+        else
+        {
+            yRaw = 0;
+        }
+
+        /*
         //  Wall grab 
         if (coll.onWall && Input.GetKey(KeyCode.LeftShift) && canMove) // [kcc] also instead of putting keycodes here just make vars at top of script
         {
             GrabWall();
         }
+        */
 
-        if (Input.GetKeyUp(KeyCode.LeftShift) || !coll.onWall || !canMove)
+        //if (Input.GetKeyUp(KeyCode.LeftShift) || !coll.onWall || !canMove)
+        if (!coll.onWall || !canMove)
         {
             wallGrab = false;
             wallSlide = false;
@@ -129,7 +185,7 @@ public class Movement : MonoBehaviour
                 speedModifier = y > 0 ? 0f : 1;
             else
                 speedModifier = y > 0 ? .5f : 1;
-            
+
 
             player.velocity = new Vector2(player.velocity.x, y * (speed * speedModifier));
         }
@@ -138,6 +194,8 @@ public class Movement : MonoBehaviour
             player.gravityScale = 3;
         }
 
+
+        /*
         if (coll.onWall && !coll.onGround && Input.GetKeyUp(KeyCode.LeftShift)) // [kcc]
         {
             if (x != 0 && !wallGrab)
@@ -146,10 +204,12 @@ public class Movement : MonoBehaviour
                 WallSlide();
             }
         }
+        */
 
         if (!coll.onWall || coll.onGround)
             wallSlide = false;
-       
+
+        /*
         // Jumping logic
         if (Input.GetKeyDown(KeyCode.Z)) // [kcc]
         {
@@ -163,13 +223,14 @@ public class Movement : MonoBehaviour
             if (coll.onWall && !coll.onGround)
                 WallJump();
         }
+        */
         
-
+        /*
         if (Input.GetKeyDown(KeyCode.C) && !hasDashed) // [kcc]
         {
             if (xRaw != 0 || yRaw != 0)
                 Dash(xRaw, yRaw, side);
-        }
+        }*/
 
         if (coll.onGround && !groundTouch)
         {
@@ -205,13 +266,13 @@ public class Movement : MonoBehaviour
     {
         anim.SetTrigger("jump");
 
-            if (kaioatTimeCounter > 0f)
-            {
-                Jump(Vector2.up, false);
-            }
+        if (kaioatTimeCounter > 0f)
+        {
+            Jump(Vector2.up, false);
+        }
 
-            if (coll.onWall && !coll.onGround)
-                WallJump();
+        if (coll.onWall && !coll.onGround)
+            WallJump();
     }
 
     // Handles the wall grabbing 
