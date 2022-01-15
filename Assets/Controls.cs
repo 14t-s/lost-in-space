@@ -35,7 +35,7 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""HoldWall"",
+                    ""name"": ""GrabWall"",
                     ""type"": ""Button"",
                     ""id"": ""ff004438-1683-401d-b217-ac772ff06195"",
                     ""expectedControlType"": ""Button"",
@@ -83,10 +83,10 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""630d58f0-3e89-4309-9e91-ee617c103a85"",
                     ""path"": ""<Keyboard>/leftShift"",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold(duration=0.01,pressPoint=0.01)"",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""HoldWall"",
+                    ""action"": ""GrabWall"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -308,7 +308,7 @@ public class @Controls : IInputActionCollection, IDisposable
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_Movement = m_Gameplay.FindAction("Movement", throwIfNotFound: true);
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
-        m_Gameplay_HoldWall = m_Gameplay.FindAction("HoldWall", throwIfNotFound: true);
+        m_Gameplay_GrabWall = m_Gameplay.FindAction("GrabWall", throwIfNotFound: true);
         m_Gameplay_Dash = m_Gameplay.FindAction("Dash", throwIfNotFound: true);
         m_Gameplay_Newaction = m_Gameplay.FindAction("New action", throwIfNotFound: true);
         m_Gameplay_OpenPauseMenu = m_Gameplay.FindAction("OpenPauseMenu", throwIfNotFound: true);
@@ -368,7 +368,7 @@ public class @Controls : IInputActionCollection, IDisposable
     private IGameplayActions m_GameplayActionsCallbackInterface;
     private readonly InputAction m_Gameplay_Movement;
     private readonly InputAction m_Gameplay_Jump;
-    private readonly InputAction m_Gameplay_HoldWall;
+    private readonly InputAction m_Gameplay_GrabWall;
     private readonly InputAction m_Gameplay_Dash;
     private readonly InputAction m_Gameplay_Newaction;
     private readonly InputAction m_Gameplay_OpenPauseMenu;
@@ -378,7 +378,7 @@ public class @Controls : IInputActionCollection, IDisposable
         public GameplayActions(@Controls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Gameplay_Movement;
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
-        public InputAction @HoldWall => m_Wrapper.m_Gameplay_HoldWall;
+        public InputAction @GrabWall => m_Wrapper.m_Gameplay_GrabWall;
         public InputAction @Dash => m_Wrapper.m_Gameplay_Dash;
         public InputAction @Newaction => m_Wrapper.m_Gameplay_Newaction;
         public InputAction @OpenPauseMenu => m_Wrapper.m_Gameplay_OpenPauseMenu;
@@ -397,9 +397,9 @@ public class @Controls : IInputActionCollection, IDisposable
                 @Jump.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnJump;
-                @HoldWall.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnHoldWall;
-                @HoldWall.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnHoldWall;
-                @HoldWall.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnHoldWall;
+                @GrabWall.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnGrabWall;
+                @GrabWall.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnGrabWall;
+                @GrabWall.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnGrabWall;
                 @Dash.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDash;
                 @Dash.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDash;
                 @Dash.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDash;
@@ -419,9 +419,9 @@ public class @Controls : IInputActionCollection, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
-                @HoldWall.started += instance.OnHoldWall;
-                @HoldWall.performed += instance.OnHoldWall;
-                @HoldWall.canceled += instance.OnHoldWall;
+                @GrabWall.started += instance.OnGrabWall;
+                @GrabWall.performed += instance.OnGrabWall;
+                @GrabWall.canceled += instance.OnGrabWall;
                 @Dash.started += instance.OnDash;
                 @Dash.performed += instance.OnDash;
                 @Dash.canceled += instance.OnDash;
@@ -497,7 +497,7 @@ public class @Controls : IInputActionCollection, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnHoldWall(InputAction.CallbackContext context);
+        void OnGrabWall(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnNewaction(InputAction.CallbackContext context);
         void OnOpenPauseMenu(InputAction.CallbackContext context);

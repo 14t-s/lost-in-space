@@ -2038,7 +2038,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 87762131}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 190929ea049d1fd498a2372d3f60d948, type: 3}
@@ -2473,7 +2473,19 @@ MonoBehaviour:
     m_ActionId: 2dd809f2-666f-4045-8e3f-0d450f1069ac
     m_ActionName: Gameplay/New action[/Keyboard/space,/Keyboard/c,/Keyboard/a,/Keyboard/s,/Keyboard/d]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 213030897}
+        m_TargetAssemblyTypeName: Movement, Assembly-CSharp
+        m_MethodName: HandleJump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 1486bb66-f8b3-4427-a138-193b125e9166
     m_ActionName: Gameplay/Jump[/Keyboard/z]
   - m_PersistentCalls:
@@ -2481,7 +2493,7 @@ MonoBehaviour:
       - m_Target: {fileID: 213030897}
         m_TargetAssemblyTypeName: Movement, Assembly-CSharp
         m_MethodName: GrabWall
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2493,7 +2505,19 @@ MonoBehaviour:
     m_ActionId: ff004438-1683-401d-b217-ac772ff06195
     m_ActionName: Gameplay/HoldWall[/Keyboard/leftShift]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 213030897}
+        m_TargetAssemblyTypeName: Movement, Assembly-CSharp
+        m_MethodName: HandleDash
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: d42c04bc-d78d-4297-a690-de3f920acd8c
     m_ActionName: Gameplay/Dash[/Keyboard/x]
   - m_PersistentCalls:

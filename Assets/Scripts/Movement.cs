@@ -70,6 +70,7 @@ public class Movement : MonoBehaviour
         playerControlsAction.Gameplay.Movement.performed += Movement_performed;
         playerControlsAction.Gameplay.Jump.performed += HandleJump;
         playerControlsAction.Gameplay.Dash.performed += HandleDash;
+        playerControlsAction.Gameplay.GrabWall.performed += GrabWall;
     }
 
     public void Movement_performed(InputAction.CallbackContext context)
@@ -125,9 +126,6 @@ public class Movement : MonoBehaviour
         float xRaw = 0;
         float yRaw = 0;
 
-        //Debug.Log(playerControlsAction.Gameplay.HoldWall.ReadValue<float>());
-
-
         if (updatedInputVector.x > 0)
         {
             xRaw = 1;
@@ -147,19 +145,22 @@ public class Movement : MonoBehaviour
         }
 
         /*
-        //  Wall grab 
+        //  Wall grab this has been implemented in the new input system
         if (coll.onWall && Input.GetKey(KeyCode.LeftShift) && canMove) // [kcc] also instead of putting keycodes here just make vars at top of script
         {
             GrabWall();
         }
         */
 
+        /*
+         // should be reimplemented
         //if (Input.GetKeyUp(KeyCode.LeftShift) || !coll.onWall || !canMove)
         if (!coll.onWall || !canMove)
         {
             wallGrab = false;
             wallSlide = false;
         }
+        */
 
         // Resets coyote time or counts down the grace period
         if (coll.onGround == true)
@@ -199,7 +200,7 @@ public class Movement : MonoBehaviour
             player.gravityScale = 3;
         }
 
-
+        // Wall slide after wall grab should be reimplemented
         /*
         if (coll.onWall && !coll.onGround && Input.GetKeyUp(KeyCode.LeftShift)) // [kcc]
         {
@@ -211,11 +212,13 @@ public class Movement : MonoBehaviour
         }
         */
 
+
+
         if (!coll.onWall || coll.onGround)
             wallSlide = false;
 
         /*
-        // Jumping logic
+        // Jumping logic has been reimplemented
         if (Input.GetKeyDown(KeyCode.Z)) // [kcc]
         {
             anim.SetTrigger("jump");
@@ -229,8 +232,8 @@ public class Movement : MonoBehaviour
                 WallJump();
         }
         */
-        
-        /*
+
+        /* dash has been reimplemented
         if (Input.GetKeyDown(KeyCode.C) && !hasDashed) // [kcc]
         {
             if (xRaw != 0 || yRaw != 0)
@@ -267,6 +270,21 @@ public class Movement : MonoBehaviour
 
     }
 
+    //Returns whether x is positive/negative or 0
+    public bool isMoving()
+    {
+        Vector2 updatedInputVector = playerControlsAction.Gameplay.Movement.ReadValue<Vector2>();
+        float x = updatedInputVector.x;
+        //float y = updatedInputVector.y;
+
+        if (x != 0)
+        {
+            return true;
+        }
+        else
+            return false;
+    }
+
     public void HandleJump(InputAction.CallbackContext context)
     {
         anim.SetTrigger("jump");
@@ -292,8 +310,10 @@ public class Movement : MonoBehaviour
     }
 
     // Handles the wall grabbing 
-    public void GrabWall()
+    public void GrabWall(InputAction.CallbackContext context)
     {
+        
+
         if (coll.onWall && canMove)
         {
             if (side != coll.wallSide)
@@ -304,7 +324,32 @@ public class Movement : MonoBehaviour
             wallGrab = true;
             wallSlide = false;
         }
+
+
+
+        // Wall slide after release wall grab
+        if (context.canceled == true)
+        {
+            Debug.Log(context.phase);
+
+            if (!coll.onWall || !canMove)
+            {
+                wallGrab = false;
+                wallSlide = false;
+            }
+
+
+            if (coll.onWall && !coll.onGround)
+            {
+                if (isMoving() == true && !wallGrab)
+                {
+                    wallSlide = true;
+                    WallSlide();
+                }
+            }
+        }
     }
+
 
     void GroundTouch()
     {
