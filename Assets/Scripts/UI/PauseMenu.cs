@@ -22,14 +22,6 @@ public class PauseMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            GameState currentGameState = GameStateManager.Instance.CurrentGameState;
-            GameState newGameState = currentGameState == GameState.Gameplay
-                ? GameState.Paused
-                : GameState.Gameplay;
-
-            GameStateManager.Instance.SetState(newGameState);
-
-            /**
             if (isOptions)
             {
                 CloseOptions();
@@ -41,11 +33,9 @@ public class PauseMenu : MonoBehaviour
             else
             {
                 PauseGame();
-            }*/
+            }
         }
     }
-
-
 
     public void PauseGame()
     {
