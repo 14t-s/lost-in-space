@@ -167,19 +167,36 @@ public class Movement : MonoBehaviour
     }
 
     //Returns whether x is positive/negative or 0
-    public bool isMoving()
+    public int getXRaw()
     {
         Vector2 updatedInputVector = playerControlsAction.Gameplay.Movement.ReadValue<Vector2>();
         float x = updatedInputVector.x;
-        //float y = updatedInputVector.y;
 
-        if (x != 0)
+        if (x > 0)
         {
-            return true;
+            return 1;
         }
+        else if (x < 0)
+            return -1;
         else
-            return false;
+            return 0;
     }
+
+    public int getYRaw()
+    {
+        Vector2 updatedInputVector = playerControlsAction.Gameplay.Movement.ReadValue<Vector2>();
+        float y = updatedInputVector.y;
+
+        if (y > 0)
+        {
+            return 1;
+        }
+        else if (y < 0)
+            return -1;
+        else
+            return 0;
+    }
+
     public void Movement_performed(InputAction.CallbackContext context)
     {
         Vector2 inputVector = context.ReadValue<Vector2>();
@@ -204,22 +221,71 @@ public class Movement : MonoBehaviour
         if (coll.onWall && !coll.onGround)
             WallJump();
     }
-
+    // DASH CODE BEGIN
     public void HandleDash(InputAction.CallbackContext context)
     {
-        // temp until stuff is moved
         Vector2 updatedInputVector = playerControlsAction.Gameplay.Movement.ReadValue<Vector2>();
-        float xRaw = updatedInputVector.x;
-        float yRaw = updatedInputVector.y;
+        float xRaw = getXRaw();
+        float yRaw = getYRaw();
 
         if (xRaw != 0 || yRaw != 0)
             Dash(xRaw, yRaw, side);
     }
+    private void Dash(float x, float y, float xdir)
+    {
+        Debug.Log("Dash");
+        if (x == -xdir && wallGrab) return;
+        Camera.main.transform.DOComplete();
+        Camera.main.transform.DOShakePosition(.2f, .5f, 14, 90, false, true);
+        FindObjectOfType<RippleEffect>().Emit(Camera.main.WorldToViewportPoint(transform.position));
+
+        hasDashed = true;
+
+        anim.SetTrigger("dash");
+
+        player.velocity = Vector2.zero;
+        Vector2 dir = new Vector2(x, y);
+
+        player.velocity += dir.normalized * dashSpeed;
+        StartCoroutine(DashWait());
+    }
+
+    IEnumerator DashWait()
+    {
+        Debug.Log("Dash wait");
+
+        FindObjectOfType<GhostTrail>().ShowGhost();
+        StartCoroutine(GroundDash());
+        DOVirtual.Float(14, 0, .8f, RigidbodyDrag);
+
+        dashParticle.Play();
+        player.gravityScale = 0;
+        GetComponent<BetterJumping>().enabled = false;
+        wallJumped = true;
+        isDashing = true;
+
+        yield return new WaitForSeconds(.3f);
+
+        dashParticle.Stop();
+        player.gravityScale = 3;
+        GetComponent<BetterJumping>().enabled = true;
+        wallJumped = false;
+        isDashing = false;
+    }
+
+    IEnumerator GroundDash()
+    {
+        Debug.Log("Ground dash");
+        yield return new WaitForSeconds(.15f);
+        if (coll.onGround)
+            hasDashed = false;
+    }
+    // DASH CODE END
 
     // Handles the wall grabbing 
     public void GrabWall(InputAction.CallbackContext context)
     {
-        
+
 
         if (coll.onWall && canMove)
         {
@@ -248,7 +314,7 @@ public class Movement : MonoBehaviour
 
             if (coll.onWall && !coll.onGround)
             {
-                if (isMoving() == true && !wallGrab)
+                if (getXRaw() != 0 && !wallGrab)
                 {
                     wallSlide = true;
                     WallSlide();
@@ -268,51 +334,7 @@ public class Movement : MonoBehaviour
         jumpParticle.Play();
     }
 
-    private void Dash(float x, float y, float xdir)
-    {
-        if (x == -xdir && wallGrab) return;
-        Camera.main.transform.DOComplete();
-        Camera.main.transform.DOShakePosition(.2f, .5f, 14, 90, false, true);
-        FindObjectOfType<RippleEffect>().Emit(Camera.main.WorldToViewportPoint(transform.position));
 
-        hasDashed = true;
-
-        anim.SetTrigger("dash");
-
-        player.velocity = Vector2.zero;
-        Vector2 dir = new Vector2(x, y);
-
-        player.velocity += dir.normalized * dashSpeed;
-        StartCoroutine(DashWait());
-    }
-
-    IEnumerator DashWait()
-    {
-        FindObjectOfType<GhostTrail>().ShowGhost();
-        StartCoroutine(GroundDash());
-        DOVirtual.Float(14, 0, .8f, RigidbodyDrag);
-
-        dashParticle.Play();
-        player.gravityScale = 0;
-        GetComponent<BetterJumping>().enabled = false;
-        wallJumped = true;
-        isDashing = true;
-
-        yield return new WaitForSeconds(.3f);
-
-        dashParticle.Stop();
-        player.gravityScale = 3;
-        GetComponent<BetterJumping>().enabled = true;
-        wallJumped = false;
-        isDashing = false;
-    }
-
-    IEnumerator GroundDash()
-    {
-        yield return new WaitForSeconds(.15f);
-        if (coll.onGround)
-            hasDashed = false;
-    }
 
     private void WallJump()
     {
