@@ -59,41 +59,12 @@ public class Movement : MonoBehaviour
         GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
         //playerControls = GetComponent<Controls>();
 
-        //Reference
-        /*
-        PlayerInputActions playerInputActions = new PlayerInputActions();
-        controls.Gameplay.Jump.performed += Jump;
-        */
-
         playerControlsAction = new Controls();
         playerControlsAction.Gameplay.Enable();
         playerControlsAction.Gameplay.Movement.performed += Movement_performed;
         playerControlsAction.Gameplay.Jump.performed += HandleJump;
         playerControlsAction.Gameplay.Dash.performed += HandleDash;
         playerControlsAction.Gameplay.GrabWall.performed += GrabWall;
-    }
-
-    public void Movement_performed(InputAction.CallbackContext context)
-    {
-        Vector2 inputVector = context.ReadValue<Vector2>();
-
-        float x = inputVector.x;
-        float y = inputVector.y;
-        Vector2 dir = new Vector2(x, y);
-
-        Walk(dir);
-        anim.SetHorizontalMovement(x, y, player.velocity.y);
-
-        //Archive
-        /*
-         float x = Input.GetAxis("Horizontal");
-        float y = Input.GetAxis("Vertical");
-        float xRaw = Input.GetAxisRaw("Horizontal");
-        float yRaw = Input.GetAxisRaw("Vertical");
-        Vector2 dir = new Vector2(x, y);
-
-        Walk(dir);
-        anim.SetHorizontalMovement(x, y, player.velocity.y);*/
     }
 
     // Start is called before the first frame update
@@ -123,44 +94,6 @@ public class Movement : MonoBehaviour
         Vector2 updatedInputVector = playerControlsAction.Gameplay.Movement.ReadValue<Vector2>();
         float x = updatedInputVector.x;
         float y = updatedInputVector.y;
-        float xRaw = 0;
-        float yRaw = 0;
-
-        if (updatedInputVector.x > 0)
-        {
-            xRaw = 1;
-        }
-        else
-        {
-            xRaw = 0;
-        }
-
-        if (updatedInputVector.y > 0)
-        {
-            yRaw = 1;
-        }
-        else
-        {
-            yRaw = 0;
-        }
-
-        /*
-        //  Wall grab this has been implemented in the new input system
-        if (coll.onWall && Input.GetKey(KeyCode.LeftShift) && canMove) // [kcc] also instead of putting keycodes here just make vars at top of script
-        {
-            GrabWall();
-        }
-        */
-
-        /*
-         // should be reimplemented
-        //if (Input.GetKeyUp(KeyCode.LeftShift) || !coll.onWall || !canMove)
-        if (!coll.onWall || !canMove)
-        {
-            wallGrab = false;
-            wallSlide = false;
-        }
-        */
 
         // Resets coyote time or counts down the grace period
         if (coll.onGround == true)
@@ -200,45 +133,8 @@ public class Movement : MonoBehaviour
             player.gravityScale = 3;
         }
 
-        // Wall slide after wall grab should be reimplemented
-        /*
-        if (coll.onWall && !coll.onGround && Input.GetKeyUp(KeyCode.LeftShift)) // [kcc]
-        {
-            if (x != 0 && !wallGrab)
-            {
-                wallSlide = true;
-                WallSlide();
-            }
-        }
-        */
-
-
-
         if (!coll.onWall || coll.onGround)
             wallSlide = false;
-
-        /*
-        // Jumping logic has been reimplemented
-        if (Input.GetKeyDown(KeyCode.Z)) // [kcc]
-        {
-            anim.SetTrigger("jump");
-
-            if (kaioatTimeCounter > 0f)
-            {
-                Jump(Vector2.up, false);
-            }
-
-            if (coll.onWall && !coll.onGround)
-                WallJump();
-        }
-        */
-
-        /* dash has been reimplemented
-        if (Input.GetKeyDown(KeyCode.C) && !hasDashed) // [kcc]
-        {
-            if (xRaw != 0 || yRaw != 0)
-                Dash(xRaw, yRaw, side);
-        }*/
 
         if (coll.onGround && !groundTouch)
         {
@@ -283,6 +179,17 @@ public class Movement : MonoBehaviour
         }
         else
             return false;
+    }
+    public void Movement_performed(InputAction.CallbackContext context)
+    {
+        Vector2 inputVector = context.ReadValue<Vector2>();
+
+        float x = inputVector.x;
+        float y = inputVector.y;
+        Vector2 dir = new Vector2(x, y);
+
+        Walk(dir);
+        anim.SetHorizontalMovement(x, y, player.velocity.y);
     }
 
     public void HandleJump(InputAction.CallbackContext context)
