@@ -45,19 +45,27 @@ public class Movement : MonoBehaviour
     public ParticleSystem wallJumpParticle;
     public ParticleSystem slideParticle;
 
-    // Raycasts for corner correction and ledge grabbing
-    private float topRaycastLength;
-    public Vector3 edgeRaycastOffset;
-    public Vector3 innerRaycastOffset;
-    private bool canCornerCorrect;
+    [Space]
+    [Header("Smoothdamp")]
+    public Vector2 currentInputVector;
+    public Vector2 smoothInputVelocity;
+    public float smoothInputTime = 0.4f;
+    public float smoothedX;
+    public float smoothedY;
 
-    private Controls playerControls;
+    // wall grab test
+    public bool stopWallGrab;
+
+    //private Controls playerControls;
     private Controls playerControlsAction;
+    private PlayerInput playerInput;
+    private CharacterController controller;
 
     void Awake()
     {
         GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
         //playerControls = GetComponent<Controls>();
+        playerInput = GetComponent<PlayerInput>();
 
         playerControlsAction = new Controls();
         playerControlsAction.Gameplay.Enable();
@@ -92,8 +100,40 @@ public class Movement : MonoBehaviour
         // d - ability
 
         Vector2 updatedInputVector = playerControlsAction.Gameplay.Movement.ReadValue<Vector2>();
-        float x = updatedInputVector.x;
-        float y = updatedInputVector.y;
+
+
+        //currentInputVector = Vector2.SmoothDamp(currentInputVector, updatedInputVector, ref smoothInputVelocity, smoothInputTime);
+        currentInputVector = Vector2.Lerp(currentInputVector, updatedInputVector, 0.2f);
+
+        Debug.Log("currentvelocity X:" + smoothInputVelocity.x + " " + "currentvelocity Y:" + smoothInputVelocity.y);
+        Debug.Log("currentInputVector X: " + currentInputVector.x + " currentInputVector" + currentInputVector.y);
+
+        // Vector2 move = new Vector2(currentInputVector.x, currentInputVector.y);
+        // controller.Move(move * Time.deltaTime * speed);
+
+
+
+        smoothedX = currentInputVector.x;
+        smoothedY = currentInputVector.y;
+        
+        float x = smoothedX;
+        float y = smoothedY;
+
+        // Sets X to 0 if X is basically 0
+        if (smoothedX < 0.01 && smoothedX > 0)
+        {
+            smoothedX = 0;
+        }
+        if (smoothedX > -0.01 && smoothedX < 0)
+        {
+            smoothedX = 0;
+        }
+
+        // Movement
+        Vector2 dir = new Vector2(smoothedX, smoothedY);
+        Walk(dir);
+        anim.SetHorizontalMovement(smoothedX, smoothedY, player.velocity.y);
+
 
         // Resets coyote time or counts down the grace period
         if (coll.onGround == true)
@@ -103,6 +143,26 @@ public class Movement : MonoBehaviour
         else
         {
             kaioatTimeCounter -= Time.deltaTime;
+        }
+
+        // After player stops pressing wall grab
+        if (stopWallGrab == true)
+        {
+            if (!coll.onWall || !canMove)
+            {
+                wallGrab = false;
+                wallSlide = false;
+            }
+
+
+            if (coll.onWall && !coll.onGround)
+            {
+                if (getXRaw() != 0 && !wallGrab)
+                {
+                    wallSlide = true;
+                    WallSlide();
+                }
+            }
         }
 
         // Resets better jumping?
@@ -200,13 +260,19 @@ public class Movement : MonoBehaviour
     public void Movement_performed(InputAction.CallbackContext context)
     {
         Vector2 inputVector = context.ReadValue<Vector2>();
+        /*
+        currentInputVector = Vector2.SmoothDamp(currentInputVector, inputVector, ref smoothInputVelocity, smoothInputTime);
+        Vector2 move = new Vector2(currentInputVector.x, currentInputVector.y);
+        float x = currentInputVector.x;
+        float y = currentInputVector.y;*/
 
-        float x = inputVector.x;
-        float y = inputVector.y;
-        Vector2 dir = new Vector2(x, y);
+        //Debug.Log(smoothedX + " " + smoothedY);
+        Vector2 dir = new Vector2(smoothedX, smoothedY);
 
         Walk(dir);
-        anim.SetHorizontalMovement(x, y, player.velocity.y);
+
+
+        anim.SetHorizontalMovement(smoothedX, smoothedY, player.velocity.y);
     }
 
     public void HandleJump(InputAction.CallbackContext context)
@@ -228,7 +294,7 @@ public class Movement : MonoBehaviour
         float xRaw = getXRaw();
         float yRaw = getYRaw();
 
-        if (xRaw != 0 || yRaw != 0)
+        if ((xRaw != 0 || yRaw != 0) && !hasDashed)
             Dash(xRaw, yRaw, side);
     }
     private void Dash(float x, float y, float xdir)
@@ -285,7 +351,7 @@ public class Movement : MonoBehaviour
     // Handles the wall grabbing 
     public void GrabWall(InputAction.CallbackContext context)
     {
-
+        stopWallGrab = false;
 
         if (coll.onWall && canMove)
         {
@@ -304,22 +370,7 @@ public class Movement : MonoBehaviour
         if (context.canceled == true)
         {
             Debug.Log(context.phase);
-
-            if (!coll.onWall || !canMove)
-            {
-                wallGrab = false;
-                wallSlide = false;
-            }
-
-
-            if (coll.onWall && !coll.onGround)
-            {
-                if (getXRaw() != 0 && !wallGrab)
-                {
-                    wallSlide = true;
-                    WallSlide();
-                }
-            }
+            stopWallGrab = true;
         }
     }
 
