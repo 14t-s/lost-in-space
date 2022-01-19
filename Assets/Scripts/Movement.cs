@@ -54,7 +54,7 @@ public class Movement : MonoBehaviour
     public float smoothedY;
 
     // wall grab test
-    public bool stopWallGrab;
+    [SerializeField] public bool stopWallGrab;
 
     //private Controls playerControls;
     private Controls playerControlsAction;
@@ -69,7 +69,7 @@ public class Movement : MonoBehaviour
 
         playerControlsAction = new Controls();
         playerControlsAction.Gameplay.Enable();
-        playerControlsAction.Gameplay.Movement.performed += Movement_performed;
+        //playerControlsAction.Gameplay.Movement.performed += Movement_performed;
         playerControlsAction.Gameplay.Jump.performed += HandleJump;
         playerControlsAction.Gameplay.Dash.performed += HandleDash;
         playerControlsAction.Gameplay.GrabWall.performed += GrabWall;
@@ -115,7 +115,7 @@ public class Movement : MonoBehaviour
 
         smoothedX = currentInputVector.x;
         smoothedY = currentInputVector.y;
-        
+
         float x = smoothedX;
         float y = smoothedY;
 
@@ -128,6 +128,15 @@ public class Movement : MonoBehaviour
         {
             smoothedX = 0;
         }
+        // Sets Y to 0 if Y is basically 0
+        if (smoothedY < 0.01 && smoothedY > 0)
+        {
+            smoothedY = 0;
+        }
+        if (smoothedY > -0.01 && smoothedY < 0)
+        {
+            smoothedY = 0;
+        }
 
         // Movement
         Vector2 dir = new Vector2(smoothedX, smoothedY);
@@ -135,7 +144,7 @@ public class Movement : MonoBehaviour
         anim.SetHorizontalMovement(smoothedX, smoothedY, player.velocity.y);
 
 
-        // Resets coyote time or counts down the grace period
+        // Resets coyote time/counts down the grace period
         if (coll.onGround == true)
         {
             kaioatTimeCounter = kaioatTime;
@@ -145,24 +154,41 @@ public class Movement : MonoBehaviour
             kaioatTimeCounter -= Time.deltaTime;
         }
 
+
+        if (stopWallGrab == true || !coll.onWall || !canMove)
+        {
+            wallGrab = false;
+            wallSlide = false;
+        }
+
+
         // After player stops pressing wall grab
         if (stopWallGrab == true)
         {
-            if (!coll.onWall || !canMove)
+            // Resets stopWallGrab
+            if (coll.onGround == true)
             {
-                wallGrab = false;
-                wallSlide = false;
+                stopWallGrab = false;
             }
-
-
-            if (coll.onWall && !coll.onGround)
+            else
             {
-                if (getXRaw() != 0 && !wallGrab)
+                // Prevents wallslide and wallgrab in invalid scenarios
+                if (!coll.onWall || !canMove)
                 {
-                    wallSlide = true;
-                    WallSlide();
+                    wallGrab = false;
+                    wallSlide = false;
+                }
+                // Wallslide after wall grab button is released
+                if (coll.onWall && !coll.onGround)
+                {
+                    if (getXRaw() != 0 && !wallGrab)
+                    {
+                        wallSlide = true;
+                        WallSlide();
+                    }
                 }
             }
+
         }
 
         // Resets better jumping?
@@ -257,16 +283,10 @@ public class Movement : MonoBehaviour
             return 0;
     }
 
+    /*
     public void Movement_performed(InputAction.CallbackContext context)
     {
         Vector2 inputVector = context.ReadValue<Vector2>();
-        /*
-        currentInputVector = Vector2.SmoothDamp(currentInputVector, inputVector, ref smoothInputVelocity, smoothInputTime);
-        Vector2 move = new Vector2(currentInputVector.x, currentInputVector.y);
-        float x = currentInputVector.x;
-        float y = currentInputVector.y;*/
-
-        //Debug.Log(smoothedX + " " + smoothedY);
         Vector2 dir = new Vector2(smoothedX, smoothedY);
 
         Walk(dir);
@@ -274,6 +294,7 @@ public class Movement : MonoBehaviour
 
         anim.SetHorizontalMovement(smoothedX, smoothedY, player.velocity.y);
     }
+    */
 
     public void HandleJump(InputAction.CallbackContext context)
     {
@@ -363,8 +384,6 @@ public class Movement : MonoBehaviour
             wallGrab = true;
             wallSlide = false;
         }
-
-
 
         // Wall slide after release wall grab
         if (context.canceled == true)

@@ -2596,6 +2596,7 @@ MonoBehaviour:
   smoothInputTime: 0.1
   smoothedX: 0
   smoothedY: 0
+  stopWallGrab: 0
 --- !u!114 &213030898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2631,10 +2632,10 @@ MonoBehaviour:
   onLeftWall: 0
   wallSide: 0
   collisionRadius: 0.1
-  bottomOffset1: {x: -0.24, y: -0.5}
-  bottomOffset2: {x: 0.27, y: -0.5}
-  rightOffset: {x: 0.33, y: 0}
-  leftOffset: {x: -0.3, y: 0}
+  bottomOffset1: {x: -0.24, y: -0.47}
+  bottomOffset2: {x: 0.27, y: -0.47}
+  rightOffset: {x: 0.3, y: 0}
+  leftOffset: {x: -0.27, y: 0}
   reachLedge: 0
   ledgeCheckerObject: {fileID: 769676808}
   bumpOuterOffset: {x: 0.4, y: 0}
@@ -23241,7 +23242,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 769676808}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.252, z: 0}
+  m_LocalPosition: {x: 0, y: 0.363, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 213030896}
