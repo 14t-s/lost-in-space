@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {
@@ -44,15 +45,34 @@ public class Movement : MonoBehaviour
     public ParticleSystem wallJumpParticle;
     public ParticleSystem slideParticle;
 
-    // Raycasts for corner correction and ledge grabbing
-    private float topRaycastLength;
-    public Vector3 edgeRaycastOffset;
-    public Vector3 innerRaycastOffset;
-    private bool canCornerCorrect;
+    [Space]
+    [Header("Smoothdamp")]
+    public Vector2 currentInputVector;
+    public Vector2 smoothInputVelocity;
+    public float smoothInputTime = 0.4f;
+    public float smoothedX;
+    public float smoothedY;
+
+    // wall grab test
+    [SerializeField] public bool stopWallGrab;
+
+    //private Controls playerControls;
+    private Controls playerControlsAction;
+    private PlayerInput playerInput;
+    private CharacterController controller;
 
     void Awake()
     {
         GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
+        //playerControls = GetComponent<Controls>();
+        playerInput = GetComponent<PlayerInput>();
+
+        playerControlsAction = new Controls();
+        playerControlsAction.Gameplay.Enable();
+        //playerControlsAction.Gameplay.Movement.performed += Movement_performed;
+        playerControlsAction.Gameplay.Jump.performed += HandleJump;
+        playerControlsAction.Gameplay.Dash.performed += HandleDash;
+        playerControlsAction.Gameplay.GrabWall.performed += GrabWall;
     }
 
     // Start is called before the first frame update
@@ -79,33 +99,52 @@ public class Movement : MonoBehaviour
         // c - special/dash
         // d - ability
 
-        float x = Input.GetAxis("Horizontal");
-        float y = Input.GetAxis("Vertical");
-        float xRaw = Input.GetAxisRaw("Horizontal");
-        float yRaw = Input.GetAxisRaw("Vertical");
-        Vector2 dir = new Vector2(x, y);
+        Vector2 updatedInputVector = playerControlsAction.Gameplay.Movement.ReadValue<Vector2>();
 
+
+        //currentInputVector = Vector2.SmoothDamp(currentInputVector, updatedInputVector, ref smoothInputVelocity, smoothInputTime);
+        currentInputVector = Vector2.Lerp(currentInputVector, updatedInputVector, 0.2f);
+
+        Debug.Log("currentvelocity X:" + smoothInputVelocity.x + " " + "currentvelocity Y:" + smoothInputVelocity.y);
+        Debug.Log("currentInputVector X: " + currentInputVector.x + " currentInputVector" + currentInputVector.y);
+
+        // Vector2 move = new Vector2(currentInputVector.x, currentInputVector.y);
+        // controller.Move(move * Time.deltaTime * speed);
+
+
+
+        smoothedX = currentInputVector.x;
+        smoothedY = currentInputVector.y;
+
+        float x = smoothedX;
+        float y = smoothedY;
+
+        // Sets X to 0 if X is basically 0
+        if (smoothedX < 0.01 && smoothedX > 0)
+        {
+            smoothedX = 0;
+        }
+        if (smoothedX > -0.01 && smoothedX < 0)
+        {
+            smoothedX = 0;
+        }
+        // Sets Y to 0 if Y is basically 0
+        if (smoothedY < 0.01 && smoothedY > 0)
+        {
+            smoothedY = 0;
+        }
+        if (smoothedY > -0.01 && smoothedY < 0)
+        {
+            smoothedY = 0;
+        }
+
+        // Movement
+        Vector2 dir = new Vector2(smoothedX, smoothedY);
         Walk(dir);
-        anim.SetHorizontalMovement(x, y, player.velocity.y);
+        anim.SetHorizontalMovement(smoothedX, smoothedY, player.velocity.y);
 
-        //  Wall grab code
-        if (coll.onWall && Input.GetKey(KeyCode.LeftShift) && canMove) // [kcc] also instead of putting keycodes here just make vars at top of script
-        {
-            if (side != coll.wallSide)
-            {
-                side *= -1;
-                anim.Flip(side);
-            }
-            wallGrab = true;
-            wallSlide = false;
-        }
 
-        if (Input.GetKeyUp(KeyCode.LeftShift) || !coll.onWall || !canMove)
-        {
-            wallGrab = false;
-            wallSlide = false;
-        }
-
+        // Resets coyote time/counts down the grace period
         if (coll.onGround == true)
         {
             kaioatTimeCounter = kaioatTime;
@@ -115,6 +154,44 @@ public class Movement : MonoBehaviour
             kaioatTimeCounter -= Time.deltaTime;
         }
 
+
+        if (stopWallGrab == true || !coll.onWall || !canMove)
+        {
+            wallGrab = false;
+            wallSlide = false;
+        }
+
+
+        // After player stops pressing wall grab
+        if (stopWallGrab == true)
+        {
+            // Resets stopWallGrab
+            if (coll.onGround == true)
+            {
+                stopWallGrab = false;
+            }
+            else
+            {
+                // Prevents wallslide and wallgrab in invalid scenarios
+                if (!coll.onWall || !canMove)
+                {
+                    wallGrab = false;
+                    wallSlide = false;
+                }
+                // Wallslide after wall grab button is released
+                if (coll.onWall && !coll.onGround)
+                {
+                    if (getXRaw() != 0 && !wallGrab)
+                    {
+                        wallSlide = true;
+                        WallSlide();
+                    }
+                }
+            }
+
+        }
+
+        // Resets better jumping?
         if (coll.onGround && !isDashing)
         {
             wallJumped = false;
@@ -130,12 +207,10 @@ public class Movement : MonoBehaviour
 
             float speedModifier;
             if (coll.reachLedge == true)
-            {
                 speedModifier = y > 0 ? 0f : 1;
-            }
             else
                 speedModifier = y > 0 ? .5f : 1;
-            
+
 
             player.velocity = new Vector2(player.velocity.x, y * (speed * speedModifier));
         }
@@ -144,41 +219,8 @@ public class Movement : MonoBehaviour
             player.gravityScale = 3;
         }
 
-        if (coll.onWall && !coll.onGround && Input.GetKeyUp(KeyCode.LeftShift)) // [kcc]
-        {
-            if (x != 0 && !wallGrab)
-            {
-                wallSlide = true;
-                WallSlide();
-            }
-        }
-
         if (!coll.onWall || coll.onGround)
             wallSlide = false;
-
-        
-
-       
-        // Jumping logic
-        if (Input.GetKeyDown(KeyCode.Z)) // [kcc]
-        {
-            anim.SetTrigger("jump");
-
-            if (kaioatTimeCounter > 0f)
-            {
-                Jump(Vector2.up, false);
-            }
-
-            if (coll.onWall && !coll.onGround)
-                WallJump();
-        }
-        
-
-        if (Input.GetKeyDown(KeyCode.C) && !hasDashed) // [kcc]
-        {
-            if (xRaw != 0 || yRaw != 0)
-                Dash(xRaw, yRaw, side);
-        }
 
         if (coll.onGround && !groundTouch)
         {
@@ -210,18 +252,75 @@ public class Movement : MonoBehaviour
 
     }
 
-    void GroundTouch()
+    //Returns whether x is positive/negative or 0
+    public int getXRaw()
     {
-        hasDashed = false;
-        isDashing = false;
+        Vector2 updatedInputVector = playerControlsAction.Gameplay.Movement.ReadValue<Vector2>();
+        float x = updatedInputVector.x;
 
-        side = anim.sr.flipX ? -1 : 1;
-
-        jumpParticle.Play();
+        if (x > 0)
+        {
+            return 1;
+        }
+        else if (x < 0)
+            return -1;
+        else
+            return 0;
     }
 
+    public int getYRaw()
+    {
+        Vector2 updatedInputVector = playerControlsAction.Gameplay.Movement.ReadValue<Vector2>();
+        float y = updatedInputVector.y;
+
+        if (y > 0)
+        {
+            return 1;
+        }
+        else if (y < 0)
+            return -1;
+        else
+            return 0;
+    }
+
+    /*
+    public void Movement_performed(InputAction.CallbackContext context)
+    {
+        Vector2 inputVector = context.ReadValue<Vector2>();
+        Vector2 dir = new Vector2(smoothedX, smoothedY);
+
+        Walk(dir);
+
+
+        anim.SetHorizontalMovement(smoothedX, smoothedY, player.velocity.y);
+    }
+    */
+
+    public void HandleJump(InputAction.CallbackContext context)
+    {
+        anim.SetTrigger("jump");
+
+        if (kaioatTimeCounter > 0f)
+        {
+            Jump(Vector2.up, false);
+        }
+
+        if (coll.onWall && !coll.onGround)
+            WallJump();
+    }
+    // DASH CODE BEGIN
+    public void HandleDash(InputAction.CallbackContext context)
+    {
+        Vector2 updatedInputVector = playerControlsAction.Gameplay.Movement.ReadValue<Vector2>();
+        float xRaw = getXRaw();
+        float yRaw = getYRaw();
+
+        if ((xRaw != 0 || yRaw != 0) && !hasDashed)
+            Dash(xRaw, yRaw, side);
+    }
     private void Dash(float x, float y, float xdir)
     {
+        Debug.Log("Dash");
         if (x == -xdir && wallGrab) return;
         Camera.main.transform.DOComplete();
         Camera.main.transform.DOShakePosition(.2f, .5f, 14, 90, false, true);
@@ -240,6 +339,8 @@ public class Movement : MonoBehaviour
 
     IEnumerator DashWait()
     {
+        Debug.Log("Dash wait");
+
         FindObjectOfType<GhostTrail>().ShowGhost();
         StartCoroutine(GroundDash());
         DOVirtual.Float(14, 0, .8f, RigidbodyDrag);
@@ -261,10 +362,49 @@ public class Movement : MonoBehaviour
 
     IEnumerator GroundDash()
     {
+        Debug.Log("Ground dash");
         yield return new WaitForSeconds(.15f);
         if (coll.onGround)
             hasDashed = false;
     }
+    // DASH CODE END
+
+    // Handles the wall grabbing 
+    public void GrabWall(InputAction.CallbackContext context)
+    {
+        stopWallGrab = false;
+
+        if (coll.onWall && canMove)
+        {
+            if (side != coll.wallSide)
+            {
+                side *= -1;
+                anim.Flip(side);
+            }
+            wallGrab = true;
+            wallSlide = false;
+        }
+
+        // Wall slide after release wall grab
+        if (context.canceled == true)
+        {
+            Debug.Log(context.phase);
+            stopWallGrab = true;
+        }
+    }
+
+
+    void GroundTouch()
+    {
+        hasDashed = false;
+        isDashing = false;
+
+        side = anim.sr.flipX ? -1 : 1;
+
+        jumpParticle.Play();
+    }
+
+
 
     private void WallJump()
     {

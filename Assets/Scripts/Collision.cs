@@ -62,6 +62,8 @@ public class Collision : MonoBehaviour
         Debug.DrawRay(ledgeCheckerObject.transform.position, Vector2.left*1f, Color.red);
         reachLedge = (canClimbRight == false && onRightWall) || (canClimbLeft == false && onLeftWall);
 
+
+        /*
         // Head bump corrector
         RaycastHit2D headBumperOuterRight = Physics2D.Raycast((Vector2)transform.position + bumpOuterOffset, Vector2.up, 0.2f);
         RaycastHit2D headBumperOuterLeft = Physics2D.Raycast((Vector2)transform.position - bumpOuterOffset, Vector2.up, 0.2f);
@@ -75,7 +77,7 @@ public class Collision : MonoBehaviour
         }
 
         RaycastHit2D headBumperMeasureLeft = Physics2D.Raycast((Vector2)transform.position - maxCorrectorOffset, Vector2.left, 1f);
-
+        */
 
 
 
@@ -85,9 +87,9 @@ public class Collision : MonoBehaviour
         Debug.DrawRay((Vector2)transform.position - bumpInnerOffset, Vector2.up * 0.2f, Color.blue);
         Debug.DrawRay((Vector2)transform.position + maxCorrectorOffset, Vector2.right*0.3f, Color.blue);
         Debug.DrawRay((Vector2)transform.position - maxCorrectorOffset + new Vector2(0,0.4f), Vector2.left*0.3f, Color.blue);
-        canCornerCorrect = (headBumperOuterRight || headBumperOuterLeft) && (!headBumperMaxCorrectionRight && !headBumperMaxCorrectionLeft);
-        //cornerCorrectDistance = ();
 
+        //canCornerCorrect = (headBumperOuterRight || headBumperOuterLeft) && (!headBumperMaxCorrectionRight && !headBumperMaxCorrectionLeft);
+        //cornerCorrectDistance = ();
     }
 
     void OnDrawGizmos()
