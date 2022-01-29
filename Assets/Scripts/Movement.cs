@@ -63,7 +63,6 @@ public class Movement : MonoBehaviour
 
     void Awake()
     {
-        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
         //playerControls = GetComponent<Controls>();
         playerInput = GetComponent<PlayerInput>();
 
@@ -83,11 +82,6 @@ public class Movement : MonoBehaviour
         anim = GetComponentInChildren<AnimationScript>();
     }
 
-    private void OnDestroy()
-    {
-        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -105,8 +99,8 @@ public class Movement : MonoBehaviour
         //currentInputVector = Vector2.SmoothDamp(currentInputVector, updatedInputVector, ref smoothInputVelocity, smoothInputTime);
         currentInputVector = Vector2.Lerp(currentInputVector, updatedInputVector, 0.2f);
 
-        Debug.Log("currentvelocity X:" + smoothInputVelocity.x + " " + "currentvelocity Y:" + smoothInputVelocity.y);
-        Debug.Log("currentInputVector X: " + currentInputVector.x + " currentInputVector" + currentInputVector.y);
+        //Debug.Log("currentvelocity X:" + smoothInputVelocity.x + " " + "currentvelocity Y:" + smoothInputVelocity.y);
+        //Debug.Log("currentInputVector X: " + currentInputVector.x + " currentInputVector" + currentInputVector.y);
 
         // Vector2 move = new Vector2(currentInputVector.x, currentInputVector.y);
         // controller.Move(move * Time.deltaTime * speed);
@@ -510,11 +504,5 @@ public class Movement : MonoBehaviour
     {
         int particleSide = coll.onRightWall ? 1 : -1;
         return particleSide;
-    }
-
-    // Enable player only if GameState is in Gameplay
-    private void OnGameStateChanged(GameState newGameState)
-    {
-        enabled = newGameState == GameState.Gameplay;
     }
 }

@@ -10,22 +10,25 @@ public class PauseMenu : MonoBehaviour
     public static bool isPaused;
     public static bool isOptions;
 
+    private Controls playerControlsAction;
+
     // Start is called before the first frame update
     void Start()
     {
         pauseMenu.SetActive(false);
         optionsMenu.SetActive(false);
+
+        playerControlsAction = new Controls();
     }
 
     // Update is called once per frame
     void Update()
     {
-        /**
-        if (Input.GetKeyDown(KeyCode.Escape))
+        bool pressPause = playerControlsAction.Gameplay.OpenPauseMenu.ReadValue<bool>();
+
+        
+        if (pressPause == true)
         {
-
-
-            
             if (isOptions)
             {
                 CloseOptions();
@@ -39,19 +42,8 @@ public class PauseMenu : MonoBehaviour
                 PauseGame();
             }
         }
-        */
+        
     }
-
-    public void OpenPauseMenu()
-    {
-        GameState currentGameState = GameStateManager.Instance.CurrentGameState;
-        GameState newGameState = currentGameState == GameState.Gameplay
-            ? GameState.Paused
-            : GameState.Gameplay;
-
-        GameStateManager.Instance.SetState(newGameState);
-    }
-
 
     public void PauseGame()
     {
