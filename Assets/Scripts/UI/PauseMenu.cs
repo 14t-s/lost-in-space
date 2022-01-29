@@ -12,7 +12,11 @@ public class PauseMenu : MonoBehaviour
     public static bool isOptions;
 
     private Controls playerControlsAction;
-    //private PlayerInput playerInput;
+
+
+
+
+    private PlayerInput playerInput;
 
     // Start is called before the first frame update
     void Start()
@@ -21,7 +25,10 @@ public class PauseMenu : MonoBehaviour
         optionsMenu.SetActive(false);
 
         playerControlsAction = new Controls();
-        //playerInput = GetComponent<PlayerInput>();
+
+
+
+        playerInput = GetComponent<PlayerInput>();
     }
     /**
     private void OnEnable()
@@ -54,7 +61,8 @@ public class PauseMenu : MonoBehaviour
                 PauseGame();
             }
         }*/
-        
+
+        Debug.Log(playerInput.currentActionMap);
     }
 
     private void SwitchActionMapPaused()
@@ -72,21 +80,23 @@ public class PauseMenu : MonoBehaviour
 
     public void PauseGame()
     {
+        playerInput.SwitchCurrentActionMap("Paused");
         pauseMenu.SetActive(true);
         Time.timeScale = 0f;
         isPaused = true;
-        //playerInput.actions["SwitchMap"].performed += SwitchActionMapPaused;
-        SwitchActionMapPaused();
+        
+        //SwitchActionMapPaused();
 
     }
 
     public void ResumeGame()
     {
+        playerInput.SwitchCurrentActionMap("Gameplay");
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
         isPaused = false;
-        //playerInput.actions["SwitchMap"].performed += SwitchActionMapResume;
-        SwitchActionMapResume();
+        
+        //SwitchActionMapResume();
     }
 
     // Options menu
