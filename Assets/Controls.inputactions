@@ -38,6 +38,14 @@
                     "interactions": ""
                 },
                 {
+                    "name": "Melee",
+                    "type": "Button",
+                    "id": "7be83d97-b240-4557-9561-ad238a5c68f1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "New action",
                     "type": "Button",
                     "id": "2dd809f2-666f-4045-8e3f-0d450f1069ac",
@@ -156,17 +164,6 @@
                 },
                 {
                     "name": "",
-                    "id": "a82a2a10-5cd7-458d-bbec-0282d5886c6e",
-                    "path": "<Keyboard>/x",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "New action",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "bd3ff994-fdd1-4678-aeeb-3f739a1d3ea1",
                     "path": "<Keyboard>/a",
                     "interactions": "",
@@ -206,6 +203,17 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "OpenPauseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a82a2a10-5cd7-458d-bbec-0282d5886c6e",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Melee",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
