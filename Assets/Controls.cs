@@ -51,6 +51,14 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
+                    ""name"": ""Melee"",
+                    ""type"": ""Button"",
+                    ""id"": ""7be83d97-b240-4557-9561-ad238a5c68f1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
                     ""name"": ""New action"",
                     ""type"": ""Button"",
                     ""id"": ""2dd809f2-666f-4045-8e3f-0d450f1069ac"",
@@ -169,17 +177,6 @@ public class @Controls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""a82a2a10-5cd7-458d-bbec-0282d5886c6e"",
-                    ""path"": ""<Keyboard>/x"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""New action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""bd3ff994-fdd1-4678-aeeb-3f739a1d3ea1"",
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
@@ -219,6 +216,17 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""OpenPauseMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a82a2a10-5cd7-458d-bbec-0282d5886c6e"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Melee"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -310,6 +318,7 @@ public class @Controls : IInputActionCollection, IDisposable
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
         m_Gameplay_GrabWall = m_Gameplay.FindAction("GrabWall", throwIfNotFound: true);
         m_Gameplay_Dash = m_Gameplay.FindAction("Dash", throwIfNotFound: true);
+        m_Gameplay_Melee = m_Gameplay.FindAction("Melee", throwIfNotFound: true);
         m_Gameplay_Newaction = m_Gameplay.FindAction("New action", throwIfNotFound: true);
         m_Gameplay_OpenPauseMenu = m_Gameplay.FindAction("OpenPauseMenu", throwIfNotFound: true);
         // Paused
@@ -370,6 +379,7 @@ public class @Controls : IInputActionCollection, IDisposable
     private readonly InputAction m_Gameplay_Jump;
     private readonly InputAction m_Gameplay_GrabWall;
     private readonly InputAction m_Gameplay_Dash;
+    private readonly InputAction m_Gameplay_Melee;
     private readonly InputAction m_Gameplay_Newaction;
     private readonly InputAction m_Gameplay_OpenPauseMenu;
     public struct GameplayActions
@@ -380,6 +390,7 @@ public class @Controls : IInputActionCollection, IDisposable
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
         public InputAction @GrabWall => m_Wrapper.m_Gameplay_GrabWall;
         public InputAction @Dash => m_Wrapper.m_Gameplay_Dash;
+        public InputAction @Melee => m_Wrapper.m_Gameplay_Melee;
         public InputAction @Newaction => m_Wrapper.m_Gameplay_Newaction;
         public InputAction @OpenPauseMenu => m_Wrapper.m_Gameplay_OpenPauseMenu;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
@@ -403,6 +414,9 @@ public class @Controls : IInputActionCollection, IDisposable
                 @Dash.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDash;
                 @Dash.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDash;
                 @Dash.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDash;
+                @Melee.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMelee;
+                @Melee.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMelee;
+                @Melee.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMelee;
                 @Newaction.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnNewaction;
                 @Newaction.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnNewaction;
                 @Newaction.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnNewaction;
@@ -425,6 +439,9 @@ public class @Controls : IInputActionCollection, IDisposable
                 @Dash.started += instance.OnDash;
                 @Dash.performed += instance.OnDash;
                 @Dash.canceled += instance.OnDash;
+                @Melee.started += instance.OnMelee;
+                @Melee.performed += instance.OnMelee;
+                @Melee.canceled += instance.OnMelee;
                 @Newaction.started += instance.OnNewaction;
                 @Newaction.performed += instance.OnNewaction;
                 @Newaction.canceled += instance.OnNewaction;
@@ -499,6 +516,7 @@ public class @Controls : IInputActionCollection, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnGrabWall(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
+        void OnMelee(InputAction.CallbackContext context);
         void OnNewaction(InputAction.CallbackContext context);
         void OnOpenPauseMenu(InputAction.CallbackContext context);
     }

@@ -72,6 +72,9 @@ public class Movement : MonoBehaviour
         playerControlsAction.Gameplay.Jump.performed += HandleJump;
         playerControlsAction.Gameplay.Dash.performed += HandleDash;
         playerControlsAction.Gameplay.GrabWall.performed += GrabWall;
+        var playerscript = GetComponent<Player>();
+        playerControlsAction.Gameplay.Melee.started += playerscript.HandleMeleeStart;
+        playerControlsAction.Gameplay.Melee.canceled += playerscript.HandleMeleeEnd;
     }
 
     // Start is called before the first frame update

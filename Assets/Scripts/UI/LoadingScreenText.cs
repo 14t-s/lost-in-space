@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 using TMPro;
 
 public class LoadingScreenText : MonoBehaviour
@@ -10,11 +9,11 @@ public class LoadingScreenText : MonoBehaviour
     public int numberOfPeriods = 3;
     public int maxNumberOfPeriods = 3;
     public float lengthOfWait = 0.5f;
-    public TextMeshProUGUI text;
+    public TextMeshProUGUI textElement;
 
     void Start()
     {
-        text.text = string.Concat(text.text, new string(".".ToCharArray()[0], numberOfPeriods));
+        textElement.text = string.Concat(textElement.text, new string(".".ToCharArray()[0], numberOfPeriods));
     }
 
     // Update is called once per frame
@@ -25,7 +24,7 @@ public class LoadingScreenText : MonoBehaviour
         {
             numberOfPeriods %= maxNumberOfPeriods;
             numberOfPeriods++;
-            text.text = string.Concat(text.text.TrimEnd(".".ToCharArray()[0]), new string(".".ToCharArray()[0], numberOfPeriods));
+            textElement.text = string.Concat(textElement.text.TrimEnd(".".ToCharArray()[0]), new string(".".ToCharArray()[0], numberOfPeriods));
             timePassed = 0f;
         }
     }
