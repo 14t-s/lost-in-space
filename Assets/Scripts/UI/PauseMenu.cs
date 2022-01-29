@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
@@ -11,6 +12,7 @@ public class PauseMenu : MonoBehaviour
     public static bool isOptions;
 
     private Controls playerControlsAction;
+    //private PlayerInput playerInput;
 
     // Start is called before the first frame update
     void Start()
@@ -19,13 +21,23 @@ public class PauseMenu : MonoBehaviour
         optionsMenu.SetActive(false);
 
         playerControlsAction = new Controls();
+        //playerInput = GetComponent<PlayerInput>();
     }
+    /**
+    private void OnEnable()
+    {
+        playerControlsAction.Enable();
+    }
+    private void OnDisable()
+    {
+        playerControlsAction.Disable();
+    }*/
 
     // Update is called once per frame
     void Update()
     {
+        /**
         bool pressPause = playerControlsAction.Gameplay.OpenPauseMenu.ReadValue<bool>();
-
         
         if (pressPause == true)
         {
@@ -41,8 +53,21 @@ public class PauseMenu : MonoBehaviour
             {
                 PauseGame();
             }
-        }
+        }*/
         
+    }
+
+    private void SwitchActionMapPaused()
+    {
+        //playerInput.SwitchCurrentActionMap("Paused");
+        playerControlsAction.Paused.Enable();
+        playerControlsAction.Gameplay.Disable();
+    }
+    private void SwitchActionMapResume()
+    {
+        //playerInput.SwitchCurrentActionMap("Gameplay");
+        playerControlsAction.Gameplay.Enable();
+        playerControlsAction.Paused.Disable();
     }
 
     public void PauseGame()
@@ -50,6 +75,9 @@ public class PauseMenu : MonoBehaviour
         pauseMenu.SetActive(true);
         Time.timeScale = 0f;
         isPaused = true;
+        //playerInput.actions["SwitchMap"].performed += SwitchActionMapPaused;
+        SwitchActionMapPaused();
+
     }
 
     public void ResumeGame()
@@ -57,6 +85,8 @@ public class PauseMenu : MonoBehaviour
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
         isPaused = false;
+        //playerInput.actions["SwitchMap"].performed += SwitchActionMapResume;
+        SwitchActionMapResume();
     }
 
     // Options menu
