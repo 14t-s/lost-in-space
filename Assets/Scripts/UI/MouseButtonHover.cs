@@ -5,6 +5,10 @@ using UnityEngine.EventSystems;
 
 public class MouseButtonHover : MonoBehaviour, IPointerEnterHandler
 {
+    //public GameObject button;
+
+   
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +24,7 @@ public class MouseButtonHover : MonoBehaviour, IPointerEnterHandler
     public void OnPointerEnter(PointerEventData eventData)
     {
         Debug.Log("Enter");
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(eventData.pointerCurrentRaycast.gameObject);
+        //EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(gameObject);
     }
 }
