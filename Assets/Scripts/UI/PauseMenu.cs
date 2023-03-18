@@ -62,7 +62,7 @@ public class PauseMenu : MonoBehaviour
             }
         }*/
 
-        Debug.Log(playerInput.currentActionMap);
+        //Debug.Log(playerInput.currentActionMap);
     }
 
     private void SwitchActionMapPaused()

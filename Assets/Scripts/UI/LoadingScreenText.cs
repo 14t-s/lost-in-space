@@ -13,6 +13,7 @@ public class LoadingScreenText : MonoBehaviour
 
     void Start()
     {
+        textElement = GameObject.Find("Text (TMP)").GetComponent<TextMeshProUGUI>();
         textElement.text = string.Concat(textElement.text, new string(".".ToCharArray()[0], numberOfPeriods));
     }
 
